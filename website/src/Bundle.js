@@ -13,16 +13,27 @@ class Bundle {
     let geo = new THREE.IcosahedronGeometry(size, 1);
     const geometry_w = new WireframeGeometry2(geo);
     const matLine = new LineMaterial({
-      color: color,
+      color,
       linewidth: 5, // in pixels
       dashed: false,
+      //transparent: true,
+      //opacity: 0,
     });
     const wireframe = new Wireframe(geometry_w, matLine);
     wireframe.computeLineDistances();
+
     scene.add(wireframe);
     wireframe.position.set(...position);
     wireframe.layers.enable(BLOOM_SCENE);
+
     this.edge_mesh = wireframe;
+
+    const bounding_geo = new THREE.SphereGeometry(size);
+    const transparent_mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
+    const bounding_sphere = new THREE.Mesh(bounding_geo, transparent_mat);
+    scene.add(bounding_sphere);
+    bounding_sphere.position.set(...position);
+    this.bounding_sphere = bounding_sphere;
 
     const geometry = new THREE.BoxGeometry(size, size, size);
     const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
