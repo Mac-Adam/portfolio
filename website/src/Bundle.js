@@ -6,6 +6,8 @@ import { BLOOM_SCENE } from "./Common";
 
 class Bundle {
   constructor(size, position, color, scene) {
+    this.target_scale = 0;
+    this.current_scale = 0;
     this.rotation_anim_x = Math.random() * 0.01 - 0.005;
     this.rotation_anim_y = Math.random() * 0.01 - 0.005;
     this.rotation_anim_z = Math.random() * 0.01 - 0.005;
@@ -14,10 +16,10 @@ class Bundle {
     const geometry_w = new WireframeGeometry2(geo);
     const matLine = new LineMaterial({
       color,
-      linewidth: 5, // in pixels
+      linewidth: 4, // in pixels
       dashed: false,
-      //transparent: true,
-      //opacity: 0,
+      transparent: true,
+      opacity: 0,
     });
     const wireframe = new Wireframe(geometry_w, matLine);
     wireframe.computeLineDistances();
@@ -42,14 +44,32 @@ class Bundle {
     inner_mesh.position.set(...position);
     this.inner_mesh = inner_mesh;
   }
+  hide_edge() {
+    this.target_scale = 0;
+  }
+  show_edge() {
+    this.target_scale = 1;
+  }
+  animate_edge() {
+    this.current_scale += (this.target_scale - this.current_scale) * 0.05;
+    if (this.current_scale >= 0.1) {
+      this.edge_mesh.material.opacity = 1;
+    } else {
+      this.edge_mesh.material.opacity = 0;
+    }
+    this.edge_mesh.scale.set(this.current_scale, this.current_scale, this.current_scale);
+  }
   animate() {
     //During firs frame it is sometimes not yet set up, not sure why
     if (!this.edge_mesh) {
       return;
     }
+
+    this.animate_edge();
     this.edge_mesh.rotation.x += this.rotation_anim_x;
     this.edge_mesh.rotation.y += this.rotation_anim_y;
     this.edge_mesh.rotation.z += this.rotation_anim_z;
+    this.hide_edge();
   }
 }
 export default Bundle;

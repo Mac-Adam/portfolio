@@ -16,7 +16,6 @@ class PickHelper {
   }
   pick(normalizedPosition, scene, camera, boundles) {
     if (this.pickedObject) {
-      this.pickedObject.edge_mesh.material.opacity = 0;
       this.pickedObject = null;
     }
 
@@ -31,7 +30,7 @@ class PickHelper {
       this.pickedObject = boundles.filter((b) => b.bounding_sphere === picked_sphere)[0];
     }
     if (this.pickedObject) {
-      this.pickedObject.edge_mesh.material.opacity = 1;
+      this.pickedObject.show_edge();
     }
   }
 }
@@ -96,6 +95,12 @@ function MyThree() {
     // Then returns the materials to normal for the normal render.
     function darkenNonBloomed(obj) {
       if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+        //This was put here because even though the bounding spheres are invisible they interfere with
+        //the bloom effect
+        if (obj.material.transparent === true) {
+          //keep it out of rendering for now
+          obj.layers.set(BLOOM_SCENE);
+        }
         refMaterials.current[obj.uuid] = obj.material;
         obj.material = darkMaterial;
       }
@@ -103,7 +108,9 @@ function MyThree() {
 
     function restoreMaterial(obj) {
       if (refMaterials.current[obj.uuid]) {
+        obj.layers.set(0);
         obj.material = refMaterials.current[obj.uuid];
+
         delete refMaterials.current[obj.uuid];
       }
     }
@@ -118,8 +125,8 @@ function MyThree() {
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1, // strength
-      0, // radius
+      0.3, // strength
+      0.1, // radius
       0 // threshold
     );
     const bloomComposer = new EffectComposer(renderer);
