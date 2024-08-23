@@ -13,6 +13,7 @@ class PickHelper {
   constructor() {
     this.raycaster = new THREE.Raycaster();
     this.pickedObject = null;
+    this.activeBundle = null;
   }
   pick(normalizedPosition, scene, camera, boundles) {
     if (this.pickedObject) {
@@ -73,9 +74,23 @@ function MyThree() {
       refPickPositiom.current.y = -100000;
     }
 
+    function getActiveBundle() {
+      refPickHelper.current.activeBundle = null;
+      if (refPickHelper.current.pickedObject) {
+        refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
+      }
+    }
+
+    function keyPress(e) {
+      if (e.key === "Escape") {
+        refPickHelper.current.activeBundle = null;
+      }
+    }
     window.addEventListener("mousemove", setPickPosition);
     window.addEventListener("mouseout", clearPickPosition);
     window.addEventListener("mouseleave", clearPickPosition);
+    window.addEventListener("click", getActiveBundle);
+    window.addEventListener("keyup", keyPress);
 
     window.addEventListener(
       "touchstart",
@@ -229,7 +244,11 @@ function MyThree() {
 
     var animate = function () {
       requestAnimationFrame(animate);
-      refBundles.current.forEach((b) => b.animate(camera));
+      if (refPickHelper.current.activeBundle) {
+        refPickHelper.current.activeBundle.active = true;
+      }
+
+      refBundles.current.forEach((b) => b.animate(camera, controls));
       render();
     };
     animate();

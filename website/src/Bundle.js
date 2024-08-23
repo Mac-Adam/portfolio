@@ -4,7 +4,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { Wireframe } from "three/addons/lines/Wireframe.js";
 import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
-import { BLOOM_SCENE } from "./Common";
+import { BLOOM_SCENE, lerp } from "./Common";
 
 class Bundle {
   constructor(size, position, color, scene, name) {
@@ -15,6 +15,8 @@ class Bundle {
     this.rotation_anim_z = Math.random() * 0.01 - 0.005;
     this.position = position;
     this.size = size;
+    this.active = false;
+
     let geo = new THREE.IcosahedronGeometry(size, 1);
     const geometry_w = new WireframeGeometry2(geo);
     const matLine = new LineMaterial({
@@ -74,7 +76,7 @@ class Bundle {
     this.target_scale = 1;
   }
   animate_edge() {
-    this.current_scale += (this.target_scale - this.current_scale) * 0.05;
+    this.current_scale = lerp(this.current_scale, this.target_scale, 0.05);
     if (this.current_scale >= 0.1) {
       this.edge_mesh.material.opacity = 1;
       this.text_mesh.material.opacity = 1;
@@ -91,10 +93,31 @@ class Bundle {
     }
     this.text_mesh.lookAt(camera.position);
   }
-  animate(camera) {
+  animate_camera(camera, controls) {
+    controls.target.set(
+      lerp(controls.target.x, this.position[0], 0.05),
+      lerp(controls.target.y, this.position[1], 0.05),
+      lerp(controls.target.z, this.position[2], 0.05)
+    );
+    const camera_dir = new THREE.Vector3();
+    const positionVec = new THREE.Vector3(...this.position);
+    camera_dir.subVectors(camera.position, positionVec);
+    const r = camera_dir.length();
+    const target_r = lerp(r, this.size * 2, 0.05);
+    const final_position = new THREE.Vector3().addVectors(positionVec, camera_dir.normalize().multiplyScalar(target_r));
+
+    camera.position.set(...final_position);
+    controls.update();
+  }
+  animate(camera, controls) {
     //During firs frame it is sometimes not yet set up, not sure why
     if (!this.edge_mesh || !this.text_mesh) {
       return;
+    }
+    if (this.active) {
+      this.hide_edge();
+      this.active = false;
+      this.animate_camera(camera, controls);
     }
 
     this.animate_edge();
