@@ -23,12 +23,18 @@ class PickHelper {
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // get the list of objects the ray intersected
     const bounding_spheres = boundles.map((b) => b.bounding_sphere);
+    bounding_spheres.forEach((b) => {
+      b.layers.set(0);
+    });
     const intersectedObjects = this.raycaster.intersectObjects(bounding_spheres);
     if (intersectedObjects.length) {
       // pick the first object. It's the closest one
       const picked_sphere = intersectedObjects[0].object;
       this.pickedObject = boundles.filter((b) => b.bounding_sphere === picked_sphere)[0];
     }
+    bounding_spheres.forEach((b) => {
+      b.layers.set(BLOOM_SCENE);
+    });
     if (this.pickedObject) {
       this.pickedObject.show_edge();
     }
@@ -216,14 +222,14 @@ function MyThree() {
 
     refContainer.current && refContainer.current.appendChild(renderer.domElement);
     // Create bundles
-    refBundles.current.push(new Bundle(1.5, [2, 0, 0], 0x00ff00, scene));
-    refBundles.current.push(new Bundle(0.5, [-2, 0, 0], 0xffff00, scene));
-    refBundles.current.push(new Bundle(1, [2, 4, 0], 0x00ffff, scene));
-    refBundles.current.push(new Bundle(2, [-4, -4, 0], 0xff00ff, scene));
+    refBundles.current.push(new Bundle(1.5, [2, 0, 0], 0x00ff00, scene, "Exhibit 1"));
+    refBundles.current.push(new Bundle(0.5, [-2, 0, 0], 0xffff00, scene, "Exhibit 2"));
+    refBundles.current.push(new Bundle(1, [2, 4, 0], 0x00ffff, scene, "Exhibit 3"));
+    refBundles.current.push(new Bundle(2, [-4, -4, 0], 0xff00ff, scene, "Exhibit 4"));
 
     var animate = function () {
       requestAnimationFrame(animate);
-      refBundles.current.forEach((b) => b.animate());
+      refBundles.current.forEach((b) => b.animate(camera));
       render();
     };
     animate();
