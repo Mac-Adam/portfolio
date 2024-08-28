@@ -16,6 +16,7 @@ class Bundle {
     this.position = position;
     this.size = size;
     this.active = false;
+    this.description = `This is ${name}`;
 
     let geo = new THREE.IcosahedronGeometry(size, 1);
     const geometry_w = new WireframeGeometry2(geo);

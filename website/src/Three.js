@@ -1,13 +1,14 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Bundle from "./Bundle";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
+import { BLOOM_SCENE, vertexShader, fragmentShader, lerp } from "./Common";
+import "./App.css";
 
 class PickHelper {
   constructor() {
@@ -47,21 +48,37 @@ function MyThree() {
   const refMaterials = useRef({});
   const refPickPositiom = useRef({ x: 0, y: 0 });
   const refPickHelper = useRef(new PickHelper());
+  const refShowGui = useRef(false);
+  const refLastWindowSize = useRef(0);
+  const refCurrWindowSize = useRef(window.innerWidth);
+  const [guiVisible, setGuiVisible] = useState(true); //used for animation, hides and shows everything so it doesn't look wired
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
+    const guiOnRenderFract = 0.6;
+    const guiVisRenderFract = 0.65;
     clearPickPosition();
+    const getTargetWidth = () => {
+      const res = refShowGui.current ? window.innerWidth * guiOnRenderFract : window.innerWidth;
+      return res;
+    };
+
+    const getWidth = () => {
+      const res = refCurrWindowSize.current;
+      return res;
+    };
 
     function getCanvasRelativePosition(event) {
       const rect = refContainer.current.getBoundingClientRect();
       return {
-        x: ((event.clientX - rect.left) * window.innerWidth) / rect.width,
+        x: ((event.clientX - rect.left) * getWidth()) / rect.width,
         y: ((event.clientY - rect.top) * window.innerHeight) / rect.height,
       };
     }
 
     function setPickPosition(event) {
       const pos = getCanvasRelativePosition(event);
-      refPickPositiom.current.x = (pos.x / window.innerWidth) * 2 - 1;
+      refPickPositiom.current.x = (pos.x / getWidth()) * 2 - 1;
       refPickPositiom.current.y = (pos.y / window.innerHeight) * -2 + 1; // note we flip Y
     }
 
@@ -140,12 +157,12 @@ function MyThree() {
     bloomLayer.set(BLOOM_SCENE);
 
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var camera = new THREE.PerspectiveCamera(75, getWidth() / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer({ antialias: true });
 
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      new THREE.Vector2(getWidth()),
       0.3, // strength
       0.1, // radius
       0 // threshold
@@ -154,7 +171,7 @@ function MyThree() {
     bloomComposer.renderToScreen = false;
     bloomComposer.addPass(renderScene);
     bloomComposer.addPass(bloomPass);
-    bloomComposer.setSize(window.innerWidth, window.innerHeight);
+    bloomComposer.setSize(getWidth());
 
     const mixPass = new ShaderPass(
       new THREE.ShaderMaterial({
@@ -176,15 +193,19 @@ function MyThree() {
     finalComposer.addPass(renderScene);
     finalComposer.addPass(mixPass);
     finalComposer.addPass(outputPass);
-    finalComposer.setSize(window.innerWidth, window.innerHeight);
+    finalComposer.setSize(getWidth());
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(getWidth());
     const controls = new OrbitControls(camera, renderer.domElement);
     camera.position.z = 5;
     controls.target.set(0, 0, 0);
     controls.update();
 
     const render = () => {
+      if (refLastWindowSize.current !== getWidth()) {
+        refLastWindowSize.current = getWidth();
+        window.onresize();
+      }
       refPickHelper.current.pick(refPickPositiom.current, scene, camera, refBundles.current);
 
       //render bloom
@@ -196,8 +217,8 @@ function MyThree() {
       finalComposer.render();
     };
     window.onresize = () => {
-      const width = window.innerWidth;
       const height = window.innerHeight;
+      const width = getWidth();
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
@@ -206,8 +227,6 @@ function MyThree() {
 
       bloomComposer.setSize(width, height);
       finalComposer.setSize(width, height);
-
-      render();
     };
 
     //setupLights
@@ -244,17 +263,31 @@ function MyThree() {
 
     var animate = function () {
       requestAnimationFrame(animate);
+
       if (refPickHelper.current.activeBundle) {
         refPickHelper.current.activeBundle.active = true;
+        setDescription(refPickHelper.current.activeBundle.description);
+        refShowGui.current = true;
+      } else {
+        refShowGui.current = false;
       }
 
       refBundles.current.forEach((b) => b.animate(camera, controls));
+
+      refCurrWindowSize.current = lerp(refCurrWindowSize.current, getTargetWidth(), 0.1);
+      setGuiVisible(getWidth() / window.innerWidth > guiVisRenderFract);
       render();
     };
     animate();
   }, []);
-
-  return <div ref={refContainer}></div>;
+  return (
+    <div className="container">
+      <div ref={refContainer} className={"three-js"}></div>
+      <div className={`gui ${guiVisible ? "hide" : ""}`}>
+        <p>{description}</p>
+      </div>
+    </div>
+  );
 }
 
 export default MyThree;
