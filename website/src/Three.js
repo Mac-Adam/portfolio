@@ -7,7 +7,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { BLOOM_SCENE, vertexShader, fragmentShader, lerp } from "./Common";
+import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
 import "./App.css";
 
 class PickHelper {
@@ -42,32 +42,27 @@ class PickHelper {
     }
   }
 }
+
+const DRAWER_WIDTH = "32rem";
+const TRANSITION = "all 250ms ease-in-out";
+
 function MyThree() {
-  const refContainer = useRef(null);
+  const refContainer = useRef(null); // for three js
   const refBundles = useRef([]);
-  const refMaterials = useRef({});
+  const refMaterials = useRef({}); // for selective bloom
   const refPickPositiom = useRef({ x: 0, y: 0 });
   const refPickHelper = useRef(new PickHelper());
-  const refShowGui = useRef(false);
-  const refLastWindowSize = useRef(0);
-  const refCurrWindowSize = useRef(window.innerWidth);
-  const [guiVisible, setGuiVisible] = useState(true); //used for animation, hides and shows everything so it doesn't look wired
   const [description, setDescription] = useState("");
+  const [showGui, setShowGui] = useState(false);
 
   useEffect(() => {
-    const guiOnRenderFract = 0.6;
-    const guiVisRenderFract = 0.65;
     clearPickPosition();
-    const getTargetWidth = () => {
-      const res = refShowGui.current ? window.innerWidth * guiOnRenderFract : window.innerWidth;
-      return res;
-    };
 
     const getWidth = () => {
-      const res = refCurrWindowSize.current;
+      const res = window.innerWidth;
       return res;
     };
-
+    // --- Picking ---
     function getCanvasRelativePosition(event) {
       const rect = refContainer.current.getBoundingClientRect();
       return {
@@ -125,12 +120,12 @@ function MyThree() {
 
     window.addEventListener("touchend", clearPickPosition);
 
+    // --- Render with selective bloom ---
+    //I am not 100% how it works, But i think It swaps the material for not bloomed objects for a pure black, which makes them invisible
+    // Then returns the materials to normal for the normal render.
     const darkMaterial = new THREE.MeshBasicMaterial({ color: "black" });
     const bloomLayer = new THREE.Layers();
 
-    //functions used for selective bloom,
-    //I am not 100% how it works, But i think It swaps the material for not bloomed objects for a pure black, which makes them invisible
-    // Then returns the materials to normal for the normal render.
     function darkenNonBloomed(obj) {
       if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
         //This was put here because even though the bounding spheres are invisible they interfere with
@@ -153,7 +148,7 @@ function MyThree() {
       }
     }
 
-    //Setup render
+    // --- Setup render ---
     bloomLayer.set(BLOOM_SCENE);
 
     var scene = new THREE.Scene();
@@ -202,10 +197,6 @@ function MyThree() {
     controls.update();
 
     const render = () => {
-      if (refLastWindowSize.current !== getWidth()) {
-        refLastWindowSize.current = getWidth();
-        window.onresize();
-      }
       refPickHelper.current.pick(refPickPositiom.current, scene, camera, refBundles.current);
 
       //render bloom
@@ -216,6 +207,7 @@ function MyThree() {
       // render the entire scene, then render bloom scene on top
       finalComposer.render();
     };
+
     window.onresize = () => {
       const height = window.innerHeight;
       const width = getWidth();
@@ -229,7 +221,7 @@ function MyThree() {
       finalComposer.setSize(width, height);
     };
 
-    //setupLights
+    // --- Lights ---
     const color = 0xfad5be;
     const intensity = 1.3;
     const light = new THREE.DirectionalLight(color, intensity);
@@ -255,11 +247,14 @@ function MyThree() {
     scene.add(light3.target);
 
     refContainer.current && refContainer.current.appendChild(renderer.domElement);
-    // Create bundles
+
+    // --- Bundles ---
     refBundles.current.push(new Bundle(1.5, [2, 0, 0], 0x00ff00, scene, "Exhibit 1"));
     refBundles.current.push(new Bundle(0.5, [-2, 0, 0], 0xffff00, scene, "Exhibit 2"));
     refBundles.current.push(new Bundle(1, [2, 4, 0], 0x00ffff, scene, "Exhibit 3"));
     refBundles.current.push(new Bundle(2, [-4, -4, 0], 0xff00ff, scene, "Exhibit 4"));
+
+    window.onresize();
 
     var animate = function () {
       requestAnimationFrame(animate);
@@ -267,26 +262,51 @@ function MyThree() {
       if (refPickHelper.current.activeBundle) {
         refPickHelper.current.activeBundle.active = true;
         setDescription(refPickHelper.current.activeBundle.description);
-        refShowGui.current = true;
+        setShowGui(true);
       } else {
-        refShowGui.current = false;
+        setShowGui(false);
       }
 
       refBundles.current.forEach((b) => b.animate(camera, controls));
 
-      refCurrWindowSize.current = lerp(refCurrWindowSize.current, getTargetWidth(), 0.1);
-      setGuiVisible(getWidth() / window.innerWidth > guiVisRenderFract);
       render();
     };
     animate();
   }, []);
+
   return (
-    <div className="container">
-      <div ref={refContainer} className={"three-js"}></div>
-      <div className={`gui ${guiVisible ? "hide" : ""}`}>
-        <p>{description}</p>
+    <>
+      <div className="container">
+        <div
+          // ref={/* */} // ref.current.getBoundingRect() => {width, hight, ...}
+          style={{
+            maxWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
+            minWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
+            transition: TRANSITION,
+            overflowX: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div ref={refContainer} className={"three-js"} />
+        </div>
+        <div
+          style={{
+            backgroundColor: "tomato",
+            transition: TRANSITION,
+            width: DRAWER_WIDTH,
+            position: "absolute",
+            right: 0, //showGui ? 0 : `-100%`,
+            top: 0,
+            bottom: 0,
+            transform: showGui ? "translateX(0)" : "translateX(100%)",
+          }}
+        >
+          <p>{description}</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -8,6 +8,7 @@ import { BLOOM_SCENE, lerp } from "./Common";
 
 class Bundle {
   constructor(size, position, color, scene, name) {
+    //used for animation of the icosphere
     this.target_scale = 0;
     this.current_scale = 0;
     this.rotation_anim_x = Math.random() * 0.01 - 0.005;
@@ -15,9 +16,12 @@ class Bundle {
     this.rotation_anim_z = Math.random() * 0.01 - 0.005;
     this.position = position;
     this.size = size;
+    // keeps track if user is currently looking at it
     this.active = false;
+    // placeholder for now, will have to populate it with some react components later
     this.description = `This is ${name}`;
 
+    // --- Create the icosphere ---
     let geo = new THREE.IcosahedronGeometry(size, 1);
     const geometry_w = new WireframeGeometry2(geo);
     const matLine = new LineMaterial({
@@ -36,6 +40,7 @@ class Bundle {
 
     this.edge_mesh = wireframe;
 
+    // Since the icosphere is a wireframe for correct picking we need a bounding sphere
     const bounding_geo = new THREE.SphereGeometry(size);
     const transparent_mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
     const bounding_sphere = new THREE.Mesh(bounding_geo, transparent_mat);
@@ -44,6 +49,7 @@ class Bundle {
     bounding_sphere.position.set(...position);
     this.bounding_sphere = bounding_sphere;
 
+    // --- Text on top of icosphere ---
     const font_loader = new FontLoader();
     //TODO: pick font
     const fontName = "helvetiker";
@@ -63,6 +69,7 @@ class Bundle {
       this.text_mesh = textMesh;
     });
 
+    // --- Inner contents --- (placeholder for now)
     const geometry = new THREE.BoxGeometry(size, size, size);
     const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
     const inner_mesh = new THREE.Mesh(geometry, material);
@@ -70,6 +77,7 @@ class Bundle {
     inner_mesh.position.set(...position);
     this.inner_mesh = inner_mesh;
   }
+  // --- Animate icosphere, text, and camera
   hide_edge() {
     this.target_scale = 0;
   }
