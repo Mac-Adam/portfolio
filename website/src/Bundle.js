@@ -7,25 +7,25 @@ import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 import { BLOOM_SCENE, lerp } from "./Common";
 
 class Bundle {
-  constructor(size, position, color, scene, name) {
+  constructor(bundle_data, scene) {
     //used for animation of the icosphere
     this.target_scale = 0;
     this.current_scale = 0;
     this.rotation_anim_x = Math.random() * 0.01 - 0.005;
     this.rotation_anim_y = Math.random() * 0.01 - 0.005;
     this.rotation_anim_z = Math.random() * 0.01 - 0.005;
-    this.position = position;
-    this.size = size;
+    this.position = bundle_data.position;
+    this.size = bundle_data.size;
     // keeps track if user is currently looking at it
     this.active = false;
     // placeholder for now, will have to populate it with some react components later
-    this.description = `This is ${name}`;
+    this.description = `This is ${bundle_data.name}`;
 
     // --- Create the icosphere ---
-    let geo = new THREE.IcosahedronGeometry(size, 1);
+    let geo = new THREE.IcosahedronGeometry(bundle_data.size * 0.9, 1);
     const geometry_w = new WireframeGeometry2(geo);
     const matLine = new LineMaterial({
-      color,
+      color: bundle_data.edge_color,
       linewidth: 4, // in pixels
       dashed: false,
       transparent: true,
@@ -35,18 +35,18 @@ class Bundle {
     wireframe.computeLineDistances();
 
     scene.add(wireframe);
-    wireframe.position.set(...position);
+    wireframe.position.set(...bundle_data.position);
     wireframe.layers.enable(BLOOM_SCENE);
 
     this.edge_mesh = wireframe;
 
     // Since the icosphere is a wireframe for correct picking we need a bounding sphere
-    const bounding_geo = new THREE.SphereGeometry(size);
+    const bounding_geo = new THREE.SphereGeometry(bundle_data.size * 0.9);
     const transparent_mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
     const bounding_sphere = new THREE.Mesh(bounding_geo, transparent_mat);
     scene.add(bounding_sphere);
     bounding_sphere.layers.set(BLOOM_SCENE);
-    bounding_sphere.position.set(...position);
+    bounding_sphere.position.set(...bundle_data.position);
     this.bounding_sphere = bounding_sphere;
 
     // --- Text on top of icosphere ---
@@ -56,25 +56,28 @@ class Bundle {
     const fontWeight = "bold";
 
     font_loader.load("fonts/" + fontName + "_" + fontWeight + ".typeface.json", (response) => {
-      const textGeo = new TextGeometry(name, {
+      const textGeo = new TextGeometry(bundle_data.name, {
         font: response,
         size: 0.3,
         depth: 0.05,
       });
       textGeo.center();
-      textGeo.translate(0, size + 0.3, 0);
-      const textMesh = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0 }));
+      textGeo.translate(0, bundle_data.size + 0.3, 0);
+      const textMesh = new THREE.Mesh(
+        textGeo,
+        new THREE.MeshBasicMaterial({ color: bundle_data.edge_color, transparent: true, opacity: 0 })
+      );
       scene.add(textMesh);
-      textMesh.position.set(...position);
+      textMesh.position.set(...bundle_data.position);
       this.text_mesh = textMesh;
     });
 
     // --- Inner contents --- (placeholder for now)
-    const geometry = new THREE.BoxGeometry(size, size, size);
+    const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
     const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
     const inner_mesh = new THREE.Mesh(geometry, material);
     scene.add(inner_mesh);
-    inner_mesh.position.set(...position);
+    inner_mesh.position.set(...bundle_data.position);
     this.inner_mesh = inner_mesh;
   }
   // --- Animate icosphere, text, and camera
@@ -104,9 +107,9 @@ class Bundle {
   }
   animate_camera(camera, controls) {
     controls.target.set(
-      lerp(controls.target.x, this.position[0], 0.05),
-      lerp(controls.target.y, this.position[1], 0.05),
-      lerp(controls.target.z, this.position[2], 0.05)
+      lerp(controls.target.x, this.position.x, 0.05),
+      lerp(controls.target.y, this.position.y, 0.05),
+      lerp(controls.target.z, this.position.z, 0.05)
     );
     const camera_dir = new THREE.Vector3();
     const positionVec = new THREE.Vector3(...this.position);

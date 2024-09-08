@@ -9,45 +9,15 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
 import "./App.css";
-
-class PickHelper {
-  constructor() {
-    this.raycaster = new THREE.Raycaster();
-    this.pickedObject = null;
-    this.activeBundle = null;
-  }
-  pick(normalizedPosition, scene, camera, boundles) {
-    if (this.pickedObject) {
-      this.pickedObject = null;
-    }
-
-    // cast a ray through the frustum
-    this.raycaster.setFromCamera(normalizedPosition, camera);
-    // get the list of objects the ray intersected
-    const bounding_spheres = boundles.map((b) => b.bounding_sphere);
-    bounding_spheres.forEach((b) => {
-      b.layers.set(0);
-    });
-    const intersectedObjects = this.raycaster.intersectObjects(bounding_spheres);
-    if (intersectedObjects.length) {
-      // pick the first object. It's the closest one
-      const picked_sphere = intersectedObjects[0].object;
-      this.pickedObject = boundles.filter((b) => b.bounding_sphere === picked_sphere)[0];
-    }
-    bounding_spheres.forEach((b) => {
-      b.layers.set(BLOOM_SCENE);
-    });
-    if (this.pickedObject) {
-      this.pickedObject.show_edge();
-    }
-  }
-}
+import { lights, bundle_data } from "./scene.js";
+import PickHelper from "./pickHelper.js";
 
 const DRAWER_WIDTH = "32rem";
 const TRANSITION = "all 250ms ease-in-out";
 
 function MyThree() {
   const refContainer = useRef(null); // for three js
+  const refRenderWindow = useRef(null);
   const refBundles = useRef([]);
   const refMaterials = useRef({}); // for selective bloom
   const refPickPositiom = useRef({ x: 0, y: 0 });
@@ -58,25 +28,28 @@ function MyThree() {
   useEffect(() => {
     clearPickPosition();
 
-    const getWidth = () => {
-      const res = window.innerWidth;
-      return res;
-    };
+    function mouseOnRenderWindow(event) {
+      return event.clientX < refRenderWindow.current.getBoundingClientRect().width;
+    }
     // --- Picking ---
     function getCanvasRelativePosition(event) {
       const rect = refContainer.current.getBoundingClientRect();
       return {
-        x: ((event.clientX - rect.left) * getWidth()) / rect.width,
+        x: ((event.clientX - rect.left) * window.innerWidth) / rect.width,
         y: ((event.clientY - rect.top) * window.innerHeight) / rect.height,
       };
     }
 
     function setPickPosition(event) {
-      const pos = getCanvasRelativePosition(event);
-      refPickPositiom.current.x = (pos.x / getWidth()) * 2 - 1;
-      refPickPositiom.current.y = (pos.y / window.innerHeight) * -2 + 1; // note we flip Y
+      if (mouseOnRenderWindow(event)) {
+        const pos = getCanvasRelativePosition(event);
+        refPickPositiom.current.x = (pos.x / window.innerWidth) * 2 - 1;
+        refPickPositiom.current.y = (pos.y / window.innerHeight) * -2 + 1; // note we flip Y
+      } else {
+        clearPickPosition();
+      }
     }
-
+    // The touch screen functionality was not yet tested and it most likely needs some changes.
     function clearPickPosition() {
       // unlike the mouse which always has a position
       // if the user stops touching the screen we want
@@ -86,10 +59,12 @@ function MyThree() {
       refPickPositiom.current.y = -100000;
     }
 
-    function getActiveBundle() {
-      refPickHelper.current.activeBundle = null;
-      if (refPickHelper.current.pickedObject) {
-        refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
+    function getActiveBundle(event) {
+      if (mouseOnRenderWindow(event)) {
+        refPickHelper.current.activeBundle = null;
+        if (refPickHelper.current.pickedObject) {
+          refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
+        }
       }
     }
 
@@ -152,12 +127,12 @@ function MyThree() {
     bloomLayer.set(BLOOM_SCENE);
 
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, getWidth() / window.innerHeight, 0.1, 1000);
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer({ antialias: true });
 
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(getWidth()),
+      new THREE.Vector2(window.innerWidth),
       0.3, // strength
       0.1, // radius
       0 // threshold
@@ -166,7 +141,7 @@ function MyThree() {
     bloomComposer.renderToScreen = false;
     bloomComposer.addPass(renderScene);
     bloomComposer.addPass(bloomPass);
-    bloomComposer.setSize(getWidth());
+    bloomComposer.setSize(window.innerWidth);
 
     const mixPass = new ShaderPass(
       new THREE.ShaderMaterial({
@@ -188,9 +163,9 @@ function MyThree() {
     finalComposer.addPass(renderScene);
     finalComposer.addPass(mixPass);
     finalComposer.addPass(outputPass);
-    finalComposer.setSize(getWidth());
+    finalComposer.setSize(window.innerWidth);
 
-    renderer.setSize(getWidth());
+    renderer.setSize(window.innerWidth);
     const controls = new OrbitControls(camera, renderer.domElement);
     camera.position.z = 5;
     controls.target.set(0, 0, 0);
@@ -210,7 +185,7 @@ function MyThree() {
 
     window.onresize = () => {
       const height = window.innerHeight;
-      const width = getWidth();
+      const width = window.innerWidth;
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
@@ -222,38 +197,20 @@ function MyThree() {
     };
 
     // --- Lights ---
-    const color = 0xfad5be;
-    const intensity = 1.3;
-    const light = new THREE.DirectionalLight(color, intensity);
-    light.position.set(0, 10, 0);
-    light.target.position.set(-5, 0, 0);
-    scene.add(light);
-    scene.add(light.target);
-
-    const color2 = 0xfac8be;
-    const intensity2 = 0.8;
-    const light2 = new THREE.DirectionalLight(color2, intensity2);
-    light2.position.set(-10, 3, 0);
-    light2.target.position.set(0, 0, 5);
-    scene.add(light2);
-    scene.add(light2.target);
-
-    const color3 = 0xbecafa;
-    const intensity3 = 2;
-    const light3 = new THREE.DirectionalLight(color3, intensity3);
-    light3.position.set(3, -10, 30);
-    light3.target.position.set(0, 10, -5);
-    scene.add(light3);
-    scene.add(light3.target);
+    lights.forEach((l) => {
+      const light = new THREE.DirectionalLight(l.color, l.intensity);
+      light.position.set(...l.position);
+      light.target.position.set(...l.target);
+      scene.add(light);
+      scene.add(light.target);
+    });
 
     refContainer.current && refContainer.current.appendChild(renderer.domElement);
 
     // --- Bundles ---
-    refBundles.current.push(new Bundle(1.5, [2, 0, 0], 0x00ff00, scene, "Exhibit 1"));
-    refBundles.current.push(new Bundle(0.5, [-2, 0, 0], 0xffff00, scene, "Exhibit 2"));
-    refBundles.current.push(new Bundle(1, [2, 4, 0], 0x00ffff, scene, "Exhibit 3"));
-    refBundles.current.push(new Bundle(2, [-4, -4, 0], 0xff00ff, scene, "Exhibit 4"));
-
+    bundle_data.forEach((b) => {
+      refBundles.current.push(new Bundle(b, scene));
+    });
     window.onresize();
 
     var animate = function () {
@@ -278,7 +235,7 @@ function MyThree() {
     <>
       <div className="container">
         <div
-          // ref={/* */} // ref.current.getBoundingRect() => {width, hight, ...}
+          ref={refRenderWindow}
           style={{
             maxWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
             minWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
