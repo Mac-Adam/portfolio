@@ -59,7 +59,7 @@ class Bundle {
       const textGeo = new TextGeometry(bundle_data.name, {
         font: response,
         size: 0.3,
-        depth: 0.05,
+        depth: 0.001,
       });
       textGeo.center();
       textGeo.translate(0, bundle_data.size + 0.3, 0);

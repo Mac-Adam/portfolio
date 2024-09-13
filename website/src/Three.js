@@ -7,6 +7,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
 import "./App.css";
 import { lights, bundle_data } from "./scene.js";
@@ -22,6 +23,7 @@ function MyThree() {
   const refMaterials = useRef({}); // for selective bloom
   const refPickPositiom = useRef({ x: 0, y: 0 });
   const refPickHelper = useRef(new PickHelper());
+  const refPosStartedClick = useRef({ x: 0, y: 0 });
   const [description, setDescription] = useState("");
   const [showGui, setShowGui] = useState(false);
 
@@ -60,7 +62,8 @@ function MyThree() {
     }
 
     function getActiveBundle(event) {
-      if (mouseOnRenderWindow(event)) {
+      const dist = Math.abs(event.clientX - refPosStartedClick.current.x) + Math.abs(event.clientY - refPosStartedClick.current.y);
+      if (mouseOnRenderWindow(event) && dist < 10) {
         refPickHelper.current.activeBundle = null;
         if (refPickHelper.current.pickedObject) {
           refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
@@ -73,11 +76,18 @@ function MyThree() {
         refPickHelper.current.activeBundle = null;
       }
     }
+
+    const recordMouseDown = (e) => {
+      refPosStartedClick.current.x = e.clientX;
+      refPosStartedClick.current.y = e.clientY;
+    };
+
     window.addEventListener("mousemove", setPickPosition);
     window.addEventListener("mouseout", clearPickPosition);
     window.addEventListener("mouseleave", clearPickPosition);
     window.addEventListener("click", getActiveBundle);
     window.addEventListener("keyup", keyPress);
+    window.addEventListener("mousedown", recordMouseDown);
 
     window.addEventListener(
       "touchstart",
@@ -128,7 +138,8 @@ function MyThree() {
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
 
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
@@ -157,11 +168,16 @@ function MyThree() {
     );
     mixPass.needsSwap = true;
 
+    const fxaaPass = new ShaderPass(FXAAShader);
+    const pixelRatio = renderer.getPixelRatio();
+    fxaaPass.material.uniforms["resolution"].value.set(1 / (window.innerWidth * pixelRatio), 1 / (window.innerHeight * pixelRatio));
+
     const outputPass = new OutputPass();
 
     const finalComposer = new EffectComposer(renderer);
     finalComposer.addPass(renderScene);
     finalComposer.addPass(mixPass);
+    finalComposer.addPass(fxaaPass);
     finalComposer.addPass(outputPass);
     finalComposer.setSize(window.innerWidth);
 
@@ -194,6 +210,9 @@ function MyThree() {
 
       bloomComposer.setSize(width, height);
       finalComposer.setSize(width, height);
+
+      const pixelRatio = renderer.getPixelRatio();
+      fxaaPass.material.uniforms["resolution"].value.set(1 / (window.innerWidth * pixelRatio), 1 / (window.innerHeight * pixelRatio));
     };
 
     // --- Lights ---
