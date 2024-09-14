@@ -7,8 +7,10 @@ import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 import { BLOOM_SCENE, lerp } from "./Common";
 
 class Bundle {
-  constructor(bundle_data, scene) {
+  constructor(bundle_data, scene, languageProvider) {
     //used for animation of the icosphere
+    this.scene = scene;
+    this.bundle_data = bundle_data;
     this.target_scale = 0;
     this.current_scale = 0;
     this.rotation_anim_x = Math.random() * 0.01 - 0.005;
@@ -16,10 +18,13 @@ class Bundle {
     this.rotation_anim_z = Math.random() * 0.01 - 0.005;
     this.position = bundle_data.position;
     this.size = bundle_data.size;
+    this.languageProvider = languageProvider;
+    languageProvider.addCallback(() => {
+      this.updateLanguage();
+    });
     // keeps track if user is currently looking at it
     this.active = false;
     // placeholder for now, will have to populate it with some react components later
-    this.description = `This is ${bundle_data.name}`;
 
     // --- Create the icosphere ---
     let geo = new THREE.IcosahedronGeometry(bundle_data.size * 0.9, 1);
@@ -50,27 +55,7 @@ class Bundle {
     this.bounding_sphere = bounding_sphere;
 
     // --- Text on top of icosphere ---
-    const font_loader = new FontLoader();
-    //TODO: pick font
-    const fontName = "helvetiker";
-    const fontWeight = "bold";
-
-    font_loader.load("fonts/" + fontName + "_" + fontWeight + ".typeface.json", (response) => {
-      const textGeo = new TextGeometry(bundle_data.name, {
-        font: response,
-        size: 0.3,
-        depth: 0.001,
-      });
-      textGeo.center();
-      textGeo.translate(0, bundle_data.size + 0.3, 0);
-      const textMesh = new THREE.Mesh(
-        textGeo,
-        new THREE.MeshBasicMaterial({ color: bundle_data.edge_color, transparent: true, opacity: 0 })
-      );
-      scene.add(textMesh);
-      textMesh.position.set(...bundle_data.position);
-      this.text_mesh = textMesh;
-    });
+    this.updateLanguage();
 
     // --- Inner contents --- (placeholder for now)
     const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
@@ -79,6 +64,36 @@ class Bundle {
     scene.add(inner_mesh);
     inner_mesh.position.set(...bundle_data.position);
     this.inner_mesh = inner_mesh;
+  }
+  updateLanguage() {
+    this.create_text();
+    this.description = this.languageProvider.getText("test");
+  }
+  create_text() {
+    if (this.text_mesh) {
+      this.scene.remove(this.text_mesh);
+    }
+    const font_loader = new FontLoader();
+    //TODO: pick font
+    const fontName = "helvetiker";
+    const fontWeight = "bold";
+
+    font_loader.load("fonts/" + fontName + "_" + fontWeight + ".typeface.json", (response) => {
+      const textGeo = new TextGeometry(this.languageProvider.getText(this.bundle_data.name), {
+        font: response,
+        size: 0.3,
+        depth: 0.001,
+      });
+      textGeo.center();
+      textGeo.translate(0, this.bundle_data.size + 0.3, 0);
+      const textMesh = new THREE.Mesh(
+        textGeo,
+        new THREE.MeshBasicMaterial({ color: this.bundle_data.edge_color, transparent: true, opacity: 0 })
+      );
+      this.scene.add(textMesh);
+      textMesh.position.set(...this.bundle_data.position);
+      this.text_mesh = textMesh;
+    });
   }
   // --- Animate icosphere, text, and camera
   hide_edge() {

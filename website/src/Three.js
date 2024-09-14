@@ -12,6 +12,7 @@ import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
 import "./App.css";
 import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
+import LanguageProvider from "./language.js";
 
 const DRAWER_WIDTH = "32rem";
 const TRANSITION = "all 250ms ease-in-out";
@@ -24,10 +25,12 @@ function MyThree() {
   const refPickPositiom = useRef({ x: 0, y: 0 });
   const refPickHelper = useRef(new PickHelper());
   const refPosStartedClick = useRef({ x: 0, y: 0 });
+  const refLanguageProvider = useRef(null);
   const [description, setDescription] = useState("");
   const [showGui, setShowGui] = useState(false);
 
   useEffect(() => {
+    refLanguageProvider.current = new LanguageProvider("pl");
     clearPickPosition();
 
     function mouseOnRenderWindow(event) {
@@ -74,6 +77,12 @@ function MyThree() {
     function keyPress(e) {
       if (e.key === "Escape") {
         refPickHelper.current.activeBundle = null;
+      }
+      if (e.key === "p") {
+        refLanguageProvider.current.setLanguage("pl");
+      }
+      if (e.key === "e") {
+        refLanguageProvider.current.setLanguage("en");
       }
     }
 
@@ -228,7 +237,7 @@ function MyThree() {
 
     // --- Bundles ---
     bundle_data.forEach((b) => {
-      refBundles.current.push(new Bundle(b, scene));
+      refBundles.current.push(new Bundle(b, scene, refLanguageProvider.current));
     });
     window.onresize();
 
