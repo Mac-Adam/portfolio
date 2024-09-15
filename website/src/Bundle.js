@@ -8,6 +8,9 @@ import { BLOOM_SCENE, lerp } from "./Common";
 
 class Bundle {
   constructor(bundle_data, scene, languageProvider) {
+    //This is not the optimal way to program it, but atm rewriting would take much more
+    //time, some bundles should be just clicked (language) without focusing on it.
+
     //used for animation of the icosphere
     this.scene = scene;
     this.bundle_data = bundle_data;
@@ -19,6 +22,9 @@ class Bundle {
     this.position = bundle_data.position;
     this.size = bundle_data.size;
     this.languageProvider = languageProvider;
+    this.clickable = bundle_data.clickable;
+    this.onClick = bundle_data.onClick;
+    this.lineWidth = 0.02 * this.size;
     languageProvider.addCallback(() => {
       this.updateLanguage();
     });
@@ -95,6 +101,9 @@ class Bundle {
       this.text_mesh = textMesh;
     });
   }
+  handleClick() {
+    this.onClick();
+  }
   // --- Animate icosphere, text, and camera
   hide_edge() {
     this.target_scale = 0;
@@ -120,6 +129,14 @@ class Bundle {
     }
     this.text_mesh.lookAt(camera.position);
   }
+  update_line_width(camera) {
+    const distance = camera.position.distanceTo(this.edge_mesh.position);
+    const fov = camera.fov * (Math.PI / 180);
+
+    const scaleFactor = 2 * Math.tan(fov / 2) * distance;
+
+    this.edge_mesh.material.linewidth = (this.lineWidth / scaleFactor) * window.innerHeight;
+  }
   animate_camera(camera, controls) {
     controls.target.set(
       lerp(controls.target.x, this.position.x, 0.05),
@@ -141,6 +158,9 @@ class Bundle {
     if (!this.edge_mesh || !this.text_mesh) {
       return;
     }
+    if (this.clickable) {
+      this.active = false;
+    }
     if (this.active) {
       this.hide_edge();
       this.active = false;
@@ -153,6 +173,7 @@ class Bundle {
     this.edge_mesh.rotation.z += this.rotation_anim_z;
     this.hide_edge();
     this.align_text(camera);
+    this.update_line_width(camera);
   }
 }
 export default Bundle;

@@ -67,9 +67,13 @@ function MyThree() {
     function getActiveBundle(event) {
       const dist = Math.abs(event.clientX - refPosStartedClick.current.x) + Math.abs(event.clientY - refPosStartedClick.current.y);
       if (mouseOnRenderWindow(event) && dist < 10) {
-        refPickHelper.current.activeBundle = null;
-        if (refPickHelper.current.pickedObject) {
-          refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
+        if (!refPickHelper.current.pickedObject) {
+          refPickHelper.current.activeBundle = null;
+        } else {
+          if (!refPickHelper.current.pickedObject.clickable) {
+            refPickHelper.current.activeBundle = refPickHelper.current.pickedObject;
+          }
+          refPickHelper.current.pickedObject.handleClick();
         }
       }
     }
@@ -77,12 +81,6 @@ function MyThree() {
     function keyPress(e) {
       if (e.key === "Escape") {
         refPickHelper.current.activeBundle = null;
-      }
-      if (e.key === "p") {
-        refLanguageProvider.current.setLanguage("pl");
-      }
-      if (e.key === "e") {
-        refLanguageProvider.current.setLanguage("en");
       }
     }
 

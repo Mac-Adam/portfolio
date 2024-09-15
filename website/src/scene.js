@@ -5,8 +5,24 @@ export const lights = [
   { color: 0xfac8be, intensity: 0.8, position: new THREE.Vector3(-10, 3, 0), target: new THREE.Vector3(0, 0, 5) },
 ];
 export const bundle_data = [
-  { size: 1.5, position: new THREE.Vector3(2, 0, 0), edge_color: 0x00ff00, name: "weather_bundle" },
-  { size: 0.5, position: new THREE.Vector3(-2, 0, 0), edge_color: 0xffff00, name: "lang_bundle" },
-  { size: 1.0, position: new THREE.Vector3(2, 4, 0), edge_color: 0x00ffff, name: "suilo_bundle" },
-  { size: 2.0, position: new THREE.Vector3(-4, -4, 0), edge_color: 0xff00ff, name: "about_bundle" },
+  {
+    size: 1.5,
+    position: new THREE.Vector3(2, 0, 0),
+    edge_color: 0x00ff00,
+    name: "weather_bundle",
+    clickable: false,
+    onClick: () => {},
+  },
+  {
+    size: 0.5,
+    position: new THREE.Vector3(-2, 0, 0),
+    edge_color: 0xffff00,
+    name: "lang_bundle",
+    clickable: true,
+    onClick: function onClick() {
+      this.languageProvider.setLanguage(this.languageProvider.language === "en" ? "pl" : "en");
+    },
+  },
+  { size: 1.0, position: new THREE.Vector3(2, 4, 0), edge_color: 0x00ffff, name: "suilo_bundle", clickable: false, onClick: () => {} },
+  { size: 2.0, position: new THREE.Vector3(-4, -4, 0), edge_color: 0xff00ff, name: "about_bundle", clickable: false, onClick: () => {} },
 ];
