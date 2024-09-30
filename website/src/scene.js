@@ -10,6 +10,7 @@ export const bundle_data = [
     position: new THREE.Vector3(2, 0, 0),
     edge_color: 0x00ff00,
     name: "weather_bundle",
+    inner_model: undefined,
     clickable: false,
     onClick: () => {},
   },
@@ -19,10 +20,27 @@ export const bundle_data = [
     edge_color: 0xffff00,
     name: "lang_bundle",
     clickable: true,
+    inner_model: "Moon_flag.glb",
     onClick: function onClick() {
       this.languageProvider.setLanguage(this.languageProvider.language === "en" ? "pl" : "en");
     },
   },
-  { size: 1.0, position: new THREE.Vector3(2, 4, 0), edge_color: 0x00ffff, name: "suilo_bundle", clickable: false, onClick: () => {} },
-  { size: 2.0, position: new THREE.Vector3(-4, -4, 0), edge_color: 0xff00ff, name: "about_bundle", clickable: false, onClick: () => {} },
+  {
+    size: 1.0,
+    position: new THREE.Vector3(2, 4, 0),
+    edge_color: 0x00ffff,
+    name: "suilo_bundle",
+    clickable: false,
+    inner_model: undefined,
+    onClick: () => {},
+  },
+  {
+    size: 2.0,
+    position: new THREE.Vector3(-4, -4, 0),
+    edge_color: 0xff00ff,
+    name: "about_bundle",
+    clickable: false,
+    inner_model: undefined,
+    onClick: () => {},
+  },
 ];

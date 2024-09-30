@@ -5,6 +5,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { Wireframe } from "three/addons/lines/Wireframe.js";
 import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 import { BLOOM_SCENE, lerp } from "./Common";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 class Bundle {
   constructor(bundle_data, scene, languageProvider) {
@@ -64,12 +65,27 @@ class Bundle {
     this.updateLanguage();
 
     // --- Inner contents --- (placeholder for now)
-    const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
-    const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
-    const inner_mesh = new THREE.Mesh(geometry, material);
-    scene.add(inner_mesh);
-    inner_mesh.position.set(...bundle_data.position);
-    this.inner_mesh = inner_mesh;
+    if (bundle_data.inner_model) {
+      const loader = new GLTFLoader();
+      loader.load(
+        // resource URL
+        `models/${bundle_data.inner_model}`,
+        // called when the resource is loaded
+        function (gltf) {
+          const inner_mesh = gltf.scene;
+          scene.add(inner_mesh);
+          inner_mesh.position.set(...bundle_data.position);
+          this.inner_mesh = inner_mesh;
+        }
+      );
+    } else {
+      const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
+      const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+      const inner_mesh = new THREE.Mesh(geometry, material);
+      scene.add(inner_mesh);
+      inner_mesh.position.set(...bundle_data.position);
+      this.inner_mesh = inner_mesh;
+    }
   }
   updateLanguage() {
     this.create_text();
