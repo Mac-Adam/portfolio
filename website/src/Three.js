@@ -21,6 +21,7 @@ function MyThree() {
   const refContainer = useRef(null); // for three js
   const refRenderWindow = useRef(null);
   const refBundles = useRef([]);
+  const refClock = useRef(null);
   const refMaterials = useRef({}); // for selective bloom
   const refPickPositiom = useRef({ x: 0, y: 0 });
   const refPickHelper = useRef(new PickHelper());
@@ -142,6 +143,7 @@ function MyThree() {
 
     // --- Setup render ---
     bloomLayer.set(BLOOM_SCENE);
+    refClock.current = new THREE.Clock();
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -241,7 +243,7 @@ function MyThree() {
 
     var animate = function () {
       requestAnimationFrame(animate);
-
+      const delta = refClock.current.getDelta();
       if (refPickHelper.current.activeBundle) {
         refPickHelper.current.activeBundle.active = true;
         setDescription(refPickHelper.current.activeBundle.description);
@@ -250,7 +252,7 @@ function MyThree() {
         setShowGui(false);
       }
 
-      refBundles.current.forEach((b) => b.animate(camera, controls));
+      refBundles.current.forEach((b) => b.animate(camera, controls, delta));
 
       render();
     };

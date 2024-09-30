@@ -22,7 +22,19 @@ export default class PickHelper {
     if (intersectedObjects.length) {
       // pick the first object. It's the closest one
       const picked_sphere = intersectedObjects[0].object;
-      this.pickedObject = bundles.filter((b) => b.bounding_sphere === picked_sphere)[0];
+      this.pickedObject = bundles.filter((b) => {
+        if (b.bounding_sphere === picked_sphere) {
+          return true;
+        }
+        let parent = picked_sphere.parent;
+        while (parent) {
+          if (b.bounding_sphere === parent) {
+            return true;
+          }
+          parent = parent.parent;
+        }
+        return false;
+      })[0];
     }
     bounding_spheres.forEach((b) => {
       b.layers.set(BLOOM_SCENE);

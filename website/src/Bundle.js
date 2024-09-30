@@ -54,14 +54,16 @@ class Bundle {
 
     this.edge_mesh = wireframe;
 
-    // Since the icosphere is a wireframe for correct picking we need a bounding sphere
-    const bounding_geo = new THREE.SphereGeometry(bundle_data.size * 0.9);
-    const transparent_mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
-    const bounding_sphere = new THREE.Mesh(bounding_geo, transparent_mat);
-    scene.add(bounding_sphere);
-    bounding_sphere.layers.set(BLOOM_SCENE);
-    bounding_sphere.position.set(...bundle_data.position);
-    this.bounding_sphere = bounding_sphere;
+    if (!this.inner_model) {
+      // Since the icosphere is a wireframe for correct picking we need a bounding sphere
+      const bounding_geo = new THREE.SphereGeometry(bundle_data.size * 0.9);
+      const transparent_mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
+      const bounding_sphere = new THREE.Mesh(bounding_geo, transparent_mat);
+      scene.add(bounding_sphere);
+      bounding_sphere.layers.set(BLOOM_SCENE);
+      bounding_sphere.position.set(...bundle_data.position);
+      this.bounding_sphere = bounding_sphere;
+    }
 
     // --- Text on top of icosphere ---
     this.updateLanguage();
@@ -79,6 +81,13 @@ class Bundle {
           inner_mesh.position.set(...bundle_data.position);
           this.inner_mesh = inner_mesh;
           this.additionalModelSetup();
+
+          this.bounding_sphere = inner_mesh;
+          // Start the animation
+          this.mixer = new THREE.AnimationMixer(gltf.scene);
+          gltf.animations.forEach((clip) => {
+            this.mixer.clipAction(clip).play();
+          });
         }
       );
     } else {
@@ -167,7 +176,7 @@ class Bundle {
     camera.position.set(...final_position);
     controls.update();
   }
-  animate(camera, controls) {
+  animate(camera, controls, delta) {
     //During firs frame it is sometimes not yet set up, not sure why
     if (!this.edge_mesh || !this.text_mesh) {
       return;
@@ -180,7 +189,9 @@ class Bundle {
       this.active = false;
       this.animate_camera(camera, controls);
     }
-
+    if (this.mixer) {
+      this.mixer.update(delta);
+    }
     this.animate_edge();
     this.edge_mesh.rotation.x += this.rotation_anim_x;
     this.edge_mesh.rotation.y += this.rotation_anim_y;

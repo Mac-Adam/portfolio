@@ -6,11 +6,11 @@ export const lights = [
 ];
 export const bundle_data = [
   {
-    size: 1.5,
+    size: 2.5,
     position: new THREE.Vector3(2, 0, 0),
     edge_color: 0x00ff00,
     name: "weather_bundle",
-    inner_model: undefined,
+    inner_model: "wether_station.glb",
     clickable: false,
     additionalModelSetup: () => {},
     onClick: () => {},
