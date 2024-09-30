@@ -10,19 +10,61 @@ export const bundle_data = [
     position: new THREE.Vector3(2, 0, 0),
     edge_color: 0x00ff00,
     name: "weather_bundle",
+    inner_model: undefined,
     clickable: false,
+    additionalModelSetup: () => {},
     onClick: () => {},
   },
   {
-    size: 0.5,
+    size: 1,
     position: new THREE.Vector3(-2, 0, 0),
     edge_color: 0xffff00,
     name: "lang_bundle",
     clickable: true,
+    inner_model: "Moon_flag.glb",
+    additionalModelSetup: function additionalModelSetup() {
+      this.flags = {};
+      const flags = this.inner_mesh.children.filter((c) => {
+        return c.name === "en" || c.name === "pl";
+      });
+      flags.forEach((element) => {
+        if (element.name !== this.languageProvider.language) {
+          element.visible = false;
+        }
+        this.flags[element.name] = element;
+      });
+      this.languageProvider.addCallback((new_l) => {
+        for (const [key, value] of Object.entries(this.flags)) {
+          if (key === new_l) {
+            value.visible = true;
+          } else {
+            value.visible = false;
+          }
+        }
+      });
+    },
     onClick: function onClick() {
       this.languageProvider.setLanguage(this.languageProvider.language === "en" ? "pl" : "en");
     },
   },
-  { size: 1.0, position: new THREE.Vector3(2, 4, 0), edge_color: 0x00ffff, name: "suilo_bundle", clickable: false, onClick: () => {} },
-  { size: 2.0, position: new THREE.Vector3(-4, -4, 0), edge_color: 0xff00ff, name: "about_bundle", clickable: false, onClick: () => {} },
+  {
+    size: 1.0,
+    position: new THREE.Vector3(2, 4, 0),
+    edge_color: 0x00ffff,
+    name: "suilo_bundle",
+    clickable: false,
+    inner_model: undefined,
+    additionalModelSetup: () => {},
+    onClick: () => {},
+  },
+  {
+    size: 2.0,
+    position: new THREE.Vector3(-4, -4, 0),
+    edge_color: 0xff00ff,
+    name: "about_bundle",
+    clickable: false,
+    inner_model: undefined,
+    additionalModelSetup: () => {},
+    onClick: () => {},
+  },
 ];

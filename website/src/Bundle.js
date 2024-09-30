@@ -5,6 +5,8 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { Wireframe } from "three/addons/lines/Wireframe.js";
 import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 import { BLOOM_SCENE, lerp } from "./Common";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import typefaceData from "@compai/font-recursive/data/typefaces/normal-400.json";
 
 class Bundle {
   constructor(bundle_data, scene, languageProvider) {
@@ -24,6 +26,7 @@ class Bundle {
     this.languageProvider = languageProvider;
     this.clickable = bundle_data.clickable;
     this.onClick = bundle_data.onClick;
+    this.additionalModelSetup = bundle_data.additionalModelSetup;
     this.lineWidth = 0.02 * this.size;
     languageProvider.addCallback(() => {
       this.updateLanguage();
@@ -64,12 +67,28 @@ class Bundle {
     this.updateLanguage();
 
     // --- Inner contents --- (placeholder for now)
-    const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
-    const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
-    const inner_mesh = new THREE.Mesh(geometry, material);
-    scene.add(inner_mesh);
-    inner_mesh.position.set(...bundle_data.position);
-    this.inner_mesh = inner_mesh;
+    if (bundle_data.inner_model) {
+      const loader = new GLTFLoader();
+      loader.load(
+        // resource URL
+        `models/${bundle_data.inner_model}`,
+        // called when the resource is loaded
+        (gltf) => {
+          const inner_mesh = gltf.scene;
+          scene.add(inner_mesh);
+          inner_mesh.position.set(...bundle_data.position);
+          this.inner_mesh = inner_mesh;
+          this.additionalModelSetup();
+        }
+      );
+    } else {
+      const geometry = new THREE.BoxGeometry(bundle_data.size, bundle_data.size, bundle_data.size);
+      const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+      const inner_mesh = new THREE.Mesh(geometry, material);
+      scene.add(inner_mesh);
+      inner_mesh.position.set(...bundle_data.position);
+      this.inner_mesh = inner_mesh;
+    }
   }
   updateLanguage() {
     this.create_text();
@@ -80,26 +99,21 @@ class Bundle {
       this.scene.remove(this.text_mesh);
     }
     const font_loader = new FontLoader();
-    //TODO: pick font
-    const fontName = "helvetiker";
-    const fontWeight = "bold";
-
-    font_loader.load("fonts/" + fontName + "_" + fontWeight + ".typeface.json", (response) => {
-      const textGeo = new TextGeometry(this.languageProvider.getText(this.bundle_data.name), {
-        font: response,
-        size: 0.3,
-        depth: 0.001,
-      });
-      textGeo.center();
-      textGeo.translate(0, this.bundle_data.size + 0.3, 0);
-      const textMesh = new THREE.Mesh(
-        textGeo,
-        new THREE.MeshBasicMaterial({ color: this.bundle_data.edge_color, transparent: true, opacity: 0 })
-      );
-      this.scene.add(textMesh);
-      textMesh.position.set(...this.bundle_data.position);
-      this.text_mesh = textMesh;
+    const font = font_loader.parse(typefaceData);
+    const textGeo = new TextGeometry(this.languageProvider.getText(this.bundle_data.name), {
+      font: font,
+      size: 0.3,
+      depth: 0.005,
     });
+    textGeo.center();
+    textGeo.translate(0, this.bundle_data.size + 0.3, 0);
+    const textMesh = new THREE.Mesh(
+      textGeo,
+      new THREE.MeshBasicMaterial({ color: this.bundle_data.edge_color, transparent: true, opacity: 0 })
+    );
+    this.scene.add(textMesh);
+    textMesh.position.set(...this.bundle_data.position);
+    this.text_mesh = textMesh;
   }
   handleClick() {
     this.onClick();
@@ -171,6 +185,12 @@ class Bundle {
     this.edge_mesh.rotation.x += this.rotation_anim_x;
     this.edge_mesh.rotation.y += this.rotation_anim_y;
     this.edge_mesh.rotation.z += this.rotation_anim_z;
+    if (this.inner_mesh) {
+      this.inner_mesh.rotation.x -= this.rotation_anim_x * 0.25;
+      this.inner_mesh.rotation.y -= this.rotation_anim_y * 0.25;
+      this.inner_mesh.rotation.z -= this.rotation_anim_z * 0.25;
+    }
+
     this.hide_edge();
     this.align_text(camera);
     this.update_line_width(camera);
