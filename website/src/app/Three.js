@@ -9,10 +9,11 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
-import "./App.css";
 import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
+
+import { RainbowButton } from "../components/ui/rainbow-button";
 
 const DRAWER_WIDTH = "32rem";
 const TRANSITION = "all 250ms ease-in-out";
@@ -261,7 +262,7 @@ function MyThree() {
 
   return (
     <>
-      <div className="container">
+      <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
         <div
           ref={refRenderWindow}
           style={{
@@ -274,7 +275,7 @@ function MyThree() {
             alignItems: "center",
           }}
         >
-          <div ref={refContainer} className={"three-js"} />
+          <div ref={refContainer} />
         </div>
         <div
           style={{
@@ -288,7 +289,7 @@ function MyThree() {
             transform: showGui ? "translateX(0)" : "translateX(100%)",
           }}
         >
-          <p>{description}</p>
+          <RainbowButton>Get Unlimited Access</RainbowButton>
         </div>
       </div>
     </>
