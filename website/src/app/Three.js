@@ -13,8 +13,6 @@ import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
 
-import { RainbowButton } from "../components/ui/rainbow-button";
-
 const DRAWER_WIDTH = "32rem";
 const TRANSITION = "all 250ms ease-in-out";
 
@@ -28,7 +26,7 @@ function MyThree() {
   const refPickHelper = useRef(new PickHelper());
   const refPosStartedClick = useRef({ x: 0, y: 0 });
   const refLanguageProvider = useRef(null);
-  const [description, setDescription] = useState("");
+  const [Description, setDescription] = useState(null);
   const [showGui, setShowGui] = useState(false);
 
   useEffect(() => {
@@ -247,7 +245,7 @@ function MyThree() {
       const delta = refClock.current.getDelta();
       if (refPickHelper.current.activeBundle) {
         refPickHelper.current.activeBundle.active = true;
-        setDescription(refPickHelper.current.activeBundle.description);
+        setDescription(() => refPickHelper.current.activeBundle.description);
         setShowGui(true);
       } else {
         setShowGui(false);
@@ -289,7 +287,7 @@ function MyThree() {
             transform: showGui ? "translateX(0)" : "translateX(100%)",
           }}
         >
-          <RainbowButton>Get Unlimited Access</RainbowButton>
+          {Description ? <Description languageProvider={refLanguageProvider.current} /> : <p>No component selected yet</p>}
         </div>
       </div>
     </>
