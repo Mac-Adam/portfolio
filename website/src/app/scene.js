@@ -1,4 +1,6 @@
 import * as THREE from "three";
+
+import WindStationDescription from "../components/descriptions/windStationDescription";
 export const lights = [
   { color: 0xfad5be, intensity: 1.3, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
   { color: 0xbecafa, intensity: 2, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
@@ -12,6 +14,7 @@ export const bundle_data = [
     name: "weather_bundle",
     inner_model: "wether_station.glb",
     clickable: false,
+    description: WindStationDescription,
     additionalModelSetup: () => {},
     onClick: () => {},
   },
@@ -22,6 +25,7 @@ export const bundle_data = [
     name: "lang_bundle",
     clickable: true,
     inner_model: "Moon_flag.glb",
+    description: null,
     additionalModelSetup: function additionalModelSetup() {
       this.flags = {};
       const flags = this.inner_mesh.children.filter((c) => {
@@ -54,6 +58,7 @@ export const bundle_data = [
     name: "suilo_bundle",
     clickable: false,
     inner_model: undefined,
+    description: null,
     additionalModelSetup: () => {},
     onClick: () => {},
   },
@@ -64,6 +69,7 @@ export const bundle_data = [
     name: "about_bundle",
     clickable: false,
     inner_model: undefined,
+    description: null,
     additionalModelSetup: () => {},
     onClick: () => {},
   },

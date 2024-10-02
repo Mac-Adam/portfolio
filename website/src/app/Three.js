@@ -9,12 +9,11 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
-import "./App.css";
 import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
 
-const DRAWER_WIDTH = "32rem";
+const DRAWER_WIDTH = "45rem";
 const TRANSITION = "all 250ms ease-in-out";
 
 function MyThree() {
@@ -27,7 +26,7 @@ function MyThree() {
   const refPickHelper = useRef(new PickHelper());
   const refPosStartedClick = useRef({ x: 0, y: 0 });
   const refLanguageProvider = useRef(null);
-  const [description, setDescription] = useState("");
+  const [Description, setDescription] = useState(null);
   const [showGui, setShowGui] = useState(false);
 
   useEffect(() => {
@@ -246,7 +245,7 @@ function MyThree() {
       const delta = refClock.current.getDelta();
       if (refPickHelper.current.activeBundle) {
         refPickHelper.current.activeBundle.active = true;
-        setDescription(refPickHelper.current.activeBundle.description);
+        setDescription(() => refPickHelper.current.activeBundle.description);
         setShowGui(true);
       } else {
         setShowGui(false);
@@ -261,12 +260,12 @@ function MyThree() {
 
   return (
     <>
-      <div className="container">
+      <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
         <div
           ref={refRenderWindow}
           style={{
-            maxWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
-            minWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
+            maxWidth: showGui ? `calc(100vw - ${DRAWER_WIDTH})` : "100vw",
+            minWidth: showGui ? `calc(100vw - ${DRAWER_WIDTH})` : "100vw",
             transition: TRANSITION,
             overflowX: "hidden",
             display: "flex",
@@ -274,11 +273,11 @@ function MyThree() {
             alignItems: "center",
           }}
         >
-          <div ref={refContainer} className={"three-js"} />
+          <div ref={refContainer} />
         </div>
         <div
           style={{
-            backgroundColor: "tomato",
+            backgroundColor: "black",
             transition: TRANSITION,
             width: DRAWER_WIDTH,
             position: "absolute",
@@ -288,7 +287,7 @@ function MyThree() {
             transform: showGui ? "translateX(0)" : "translateX(100%)",
           }}
         >
-          <p>{description}</p>
+          {Description ? <Description languageProvider={refLanguageProvider.current} /> : "Loading..."}
         </div>
       </div>
     </>

@@ -1,4 +1,3 @@
-import "./App.css";
 import Three from "./Three";
 import { useEffect } from "react";
 
@@ -7,8 +6,8 @@ function App() {
     document.title = "Portfolio";
   }, []);
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header style={{ backgroundColor: "black" }}>
         <Three />
       </header>
     </div>

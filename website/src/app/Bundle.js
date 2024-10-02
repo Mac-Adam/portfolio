@@ -28,6 +28,7 @@ class Bundle {
     this.onClick = bundle_data.onClick;
     this.additionalModelSetup = bundle_data.additionalModelSetup;
     this.lineWidth = 0.02 * this.size;
+    this.description = bundle_data.description;
     languageProvider.addCallback(() => {
       this.updateLanguage();
     });
@@ -101,7 +102,7 @@ class Bundle {
   }
   updateLanguage() {
     this.create_text();
-    this.description = this.languageProvider.getText("test");
+    //this.description = this.languageProvider.getText("test");
   }
   create_text() {
     if (this.text_mesh) {

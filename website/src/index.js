@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import App from "./app/App";
+import "./app/globals.css";
+import reportWebVitals from "./app/reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />); // Strict mode makes double render
