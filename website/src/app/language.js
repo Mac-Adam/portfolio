@@ -24,6 +24,6 @@ export default class LanguageProvider {
     this.callbacks.push(callback);
   }
   getText(key) {
-    return this.resources[key][this.language];
+    return this.resources[key] ? this.resources[key][this.language] : "";
   }
 }

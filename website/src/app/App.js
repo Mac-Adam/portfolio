@@ -7,7 +7,7 @@ function App() {
   }, []);
   return (
     <div>
-      <header>
+      <header style={{ backgroundColor: "black" }}>
         <Three />
       </header>
     </div>

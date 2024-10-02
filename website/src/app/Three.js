@@ -13,7 +13,7 @@ import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
 
-const DRAWER_WIDTH = "32rem";
+const DRAWER_WIDTH = "45rem";
 const TRANSITION = "all 250ms ease-in-out";
 
 function MyThree() {
@@ -264,8 +264,8 @@ function MyThree() {
         <div
           ref={refRenderWindow}
           style={{
-            maxWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
-            minWidth: showGui ? `calc(100vw - 32rem)` : "100vw",
+            maxWidth: showGui ? `calc(100vw - ${DRAWER_WIDTH})` : "100vw",
+            minWidth: showGui ? `calc(100vw - ${DRAWER_WIDTH})` : "100vw",
             transition: TRANSITION,
             overflowX: "hidden",
             display: "flex",
@@ -277,7 +277,7 @@ function MyThree() {
         </div>
         <div
           style={{
-            backgroundColor: "tomato",
+            backgroundColor: "black",
             transition: TRANSITION,
             width: DRAWER_WIDTH,
             position: "absolute",
@@ -287,7 +287,7 @@ function MyThree() {
             transform: showGui ? "translateX(0)" : "translateX(100%)",
           }}
         >
-          {Description ? <Description languageProvider={refLanguageProvider.current} /> : <p>No component selected yet</p>}
+          {Description ? <Description languageProvider={refLanguageProvider.current} /> : "Loading..."}
         </div>
       </div>
     </>
