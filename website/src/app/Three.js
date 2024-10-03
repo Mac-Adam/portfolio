@@ -228,12 +228,12 @@ function MyThree() {
       const light = new THREE.DirectionalLight(l.color, l.intensity);
       light.position.set(...l.position);
       light.target.position.set(...l.target);
+      light.castShadow = true;
       scene.add(light);
       scene.add(light.target);
     });
-    const light = new THREE.AmbientLight(0x404040, 15); // soft white light
+    const light = new THREE.AmbientLight(0x404040); // soft white light
     scene.add(light);
-
     refContainer.current && refContainer.current.appendChild(renderer.domElement);
 
     // --- Bundles ---
@@ -250,6 +250,7 @@ function MyThree() {
         setDescription(() => refPickHelper.current.activeBundle.description);
         setShowGui(true);
       } else {
+        setDescription(null);
         setShowGui(false);
       }
 
