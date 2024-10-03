@@ -7,6 +7,70 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  suilo_gov_main: {
+    pl: "Wybory do Samorządu",
+    en: "Council Election",
+  },
+  suilo_gov_sub: {
+    pl: "2020, 2021",
+    en: "2020, 2021",
+  },
+  suilo_gov_des: {
+    pl: "Wybory online przebiegły sprawnie ułatwiając pracę samorządu",
+    en: "Online elections were successful, and made councilors job easier.",
+  },
+  suilo_student_main: {
+    pl: "Usprawnienie Samorządu",
+    en: "Improvement of Council",
+  },
+  suilo_student_sub: {
+    pl: "",
+    en: "",
+  },
+  suilo_student_des: {
+    pl: "Usprawniło przepływ informacji między uczniami a Samorządem",
+    en: "Made communication between students and School Council easier",
+  },
+  suilo_back_main: {
+    pl: "Backend w Express",
+    en: "Backend made with Express",
+  },
+  suilo_back_sub: {
+    pl: "Java Script, Firebase",
+    en: "Java Script, Firebase",
+  },
+  suilo_back_des: {
+    pl: "Integracja autoryzacji, bazy danych noSQL Firestore",
+    en: "Integration of authorization, noSQL Firestore databse",
+  },
+  suilo_front_main: {
+    pl: "Frontend w React",
+    en: "Frontend made with React",
+  },
+  suilo_front_sub: {
+    pl: "Java Script",
+    en: "Java Script",
+  },
+  suilo_front_des: {
+    pl: "Interfejs administratora pozwala na edycję kontentu",
+    en: "Admin interface allows for on-site content editions",
+  },
+  suilo_team_main: {
+    pl: "Stworzone w grupie",
+    en: "Made in a team",
+  },
+  suilo_team_sub: {
+    pl: "3 os.",
+    en: "of 3.",
+  },
+  suilo_team_des: {
+    pl: "Byłem odpowiedzialny za stworzenie backendu",
+    en: "I was responsible for developing backend",
+  },
+  suilo_title: {
+    pl: "Strona Samorządu Uczniowskiego",
+    en: "School Council Website",
+  },
   github: {
     pl: "Zobacz na GitHub'ie",
     en: "View it on GitHub",

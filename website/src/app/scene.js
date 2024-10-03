@@ -1,10 +1,11 @@
 import * as THREE from "three";
 
 import WindStationDescription from "../components/descriptions/windStationDescription";
+import SuiloDescription from "../components/descriptions/suiloDescription";
 export const lights = [
-  { color: 0xfad5be, intensity: 1.3, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
-  { color: 0xbecafa, intensity: 2, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
-  { color: 0xfac8be, intensity: 0.8, position: new THREE.Vector3(-10, 3, 0), target: new THREE.Vector3(0, 0, 5) },
+  { color: 0xfa957e, intensity: 1, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
+  { color: 0x8e9afa, intensity: 1.2, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
+  { color: 0xfa988e, intensity: 0.8, position: new THREE.Vector3(-10, 3, 0), target: new THREE.Vector3(0, 0, 5) },
 ];
 export const bundle_data = [
   {
@@ -52,13 +53,13 @@ export const bundle_data = [
     },
   },
   {
-    size: 1.0,
+    size: 1.8,
     position: new THREE.Vector3(2, 4, 0),
     edge_color: 0x00ffff,
     name: "suilo_bundle",
     clickable: false,
-    inner_model: undefined,
-    description: null,
+    inner_model: "suilo.glb",
+    description: SuiloDescription,
     additionalModelSetup: () => {},
     onClick: () => {},
   },

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { ChevronRight } from "lucide-react";
-import { GitHubLogoIcon, OpacityIcon, BarChartIcon, EyeOpenIcon, LightningBoltIcon, CubeIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
+
+import { OpacityIcon, BarChartIcon, EyeOpenIcon, LightningBoltIcon, CubeIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 
 import { BentoCard, BentoGrid } from "./../ui/bento-grid";
 import { BorderBeam } from "../ui/border-beam";
 import { cn } from "./../../lib/utils";
 import { AnimatedGridPattern } from "../ui/animated-grid-pattern";
-import AnimatedGradientText from "../ui/animated-gradient-text";
+import BlurFade from "../ui/blur-fade";
+import GithubButton from "./githubButton";
 
 const features = [
   {
@@ -65,40 +66,24 @@ const features = [
   },
 ];
 
-const WindStationDescription = ({ children, ...props }) => {
-  const [language, setLanguage] = useState(props.languageProvider.language);
-  props.languageProvider.addCallback(setLanguage);
+const WindStationDescription = ({ languageProvider }) => {
+  const [language, setLanguage] = useState(languageProvider.language);
+  languageProvider.addCallback(setLanguage);
   const [current, setCurrent] = useState("ws_esp_description");
   return (
     <div className="h-full flex flex-col p-4">
       <BentoGrid className="lg:grid-rows-6 pb-4">
         {features.map((feature) => (
-          <BentoCard onClick={setCurrent} key={feature.name} languageProvider={props.languageProvider} {...feature} />
+          <BentoCard onClick={setCurrent} key={feature.name} languageProvider={languageProvider} {...feature} />
         ))}
       </BentoGrid>
       <div className="p-3 relative flex flex-col flex-1 w-full overflow-hidden rounded-xl border bg-background md:shadow-xl">
-        <span className="flex-1 flex-col whitespace-pre-line pointer-events-none bg-gradient-to-b from-black to-slate-800 bg-clip-text text-left text-lg font-semibold leading-none text-transparent dark:from-slate-900 dark:to-slate-900/10">
-          {props.languageProvider.getText(current)}
-        </span>
-        <div
-          onClick={() => {
-            window.open("https://github.com/Mac-Adam/weather_station", "_blank");
-          }}
-          className="cursor-pointer absolute inset-x-0 bottom-0 py-2 flex w-full items-center justify-center"
-        >
-          <AnimatedGradientText>
-            <GitHubLogoIcon />
-            <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
-            <span
-              className={cn(
-                `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`
-              )}
-            >
-              {props.languageProvider.getText("github")}
-            </span>
-            <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
-          </AnimatedGradientText>
-        </div>
+        <BlurFade key={current} inView>
+          <span className="flex-1 flex-col whitespace-pre-line pointer-events-none bg-gradient-to-b from-black to-slate-800 bg-clip-text text-left text-lg font-semibold leading-none text-transparent dark:from-slate-900 dark:to-slate-900/10">
+            {languageProvider.getText(current)}
+          </span>
+        </BlurFade>
+        <GithubButton languageProvider={languageProvider} url="https://github.com/Mac-Adam/weather_station" />
         <BorderBeam size={250} duration={15} delay={9} borderWidth={2} />
         <AnimatedGridPattern
           numSquares={30}

@@ -171,7 +171,7 @@ class Bundle {
     const positionVec = new THREE.Vector3(...this.position);
     camera_dir.subVectors(camera.position, positionVec);
     const r = camera_dir.length();
-    const target_r = lerp(r, this.size * 2, 0.05);
+    const target_r = lerp(r, this.size * 1.5, 0.05);
     const final_position = new THREE.Vector3().addVectors(positionVec, camera_dir.normalize().multiplyScalar(target_r));
 
     camera.position.set(...final_position);
