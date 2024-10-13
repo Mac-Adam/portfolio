@@ -232,7 +232,7 @@ function MyThree() {
       scene.add(light);
       scene.add(light.target);
     });
-    const light = new THREE.AmbientLight(0x404040); // soft white light
+    const light = new THREE.AmbientLight(0x404040, 5); // soft white light
     scene.add(light);
     refContainer.current && refContainer.current.appendChild(renderer.domElement);
 

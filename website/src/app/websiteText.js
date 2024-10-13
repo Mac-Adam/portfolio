@@ -186,9 +186,9 @@ const websiteText = {
     pl: "Strona SUILO",
     en: "SUILO Website",
   },
-  about_bundle: {
-    pl: "O Mnie",
-    en: "About Me",
+  dnd_bundle: {
+    pl: "Monitor zasobów D&D",
+    en: "D&D Tracker",
   },
 };
 export default websiteText;
