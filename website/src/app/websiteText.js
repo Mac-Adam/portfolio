@@ -7,6 +7,38 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  dnd_tweet1: {
+    pl: `Świetne urządzenie!!!
+    Zanim dowiedziałem się o istnieniu tego monitora zasobów, non stop musiałem gumować i ponownie zapisywać wszystkie rzeczy.
+    Teraz: kilko kliknięć i wszystko mam ustawione, szybko i intuicyjnie
+    Idealny gadżet dla każdego gracza!!!
+    Wiadomo można zwyczajnie użyć telefonu...
+    Takie rozwiązanie jest jednak znacznie fajniejsze`,
+    en: `Just Great!!!
+    Before I got my hands on this resource tracker, I had to write and erase everything over and over again.\
+    Now: a few clicks and I am all set, quickly and hustle-free
+    The perfect gadget for every player.
+    Obviously you can just use your phone to track everything...
+    This is way cooler though.`,
+  },
+  dnd_tweet2: {
+    pl: `Wiele użytecznych funkcji. Można bez problemu zapisać swoje punkty wytrzymałości, komórki czarów, albo cokolwiek innego.
+    Nie ważne jaką klasą byś nie grał zawsze się przyda, wiadomo dla barbarzyńcy to może być lekki przerost formy nad treścią, ale dla maga, barda czy innego druida, świetne!
+    Całość umieszczona w obudowie z wbudowanym schowkiem na karty zaklęć, kostki. Na razie co prawda mało to ozdobne ale liczę na to, że autorowi uda się to jeszcze zmienić.
+    No i do tego świeci się na wybrany kolor. Polecam 10/10`,
+    en: `One device to track them all. Hit points, spell slots, class features, magic item usages, or anything else you can imagine.
+    Doesn't matter which class you play, it'll be of use. Obviously it might be a bit of a overkill for a barbarian, but for a mage bard or druid it is perfect.
+    Everything neatly packed into a housing with spell card and dice storage. Unfortunately it is not yet decorated, but I am hopeful the author will change this in the future.
+    On top of that is is RGB. Would recommend 10/10`,
+  },
+  dnd_tweet3: {
+    pl: `To już jakaś przesada, nie wierzę jakim wielkim nerdem trzeba być żeby mieć coś takiego.
+    Nie dość że trzeba grać w D&D to jeszcze lubić elektronikę. Nie wyobrażam sobie nawet tego.
+    Ale trzeba przyznać że fajnie się świeci.`,
+    en: `ngl you have to be a turbo nerd to have something like that that.
+    Being into electronics and playing D&D. Unimaginable for me.
+    I do like the lights though.`,
+  },
   suilo_gov_main: {
     pl: "Wybory do Samorządu",
     en: "Council Election",

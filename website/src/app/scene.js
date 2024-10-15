@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import WindStationDescription from "../components/descriptions/windStationDescription";
 import SuiloDescription from "../components/descriptions/suiloDescription";
+import DnDDescription from "../components/descriptions/dndDescription";
 export const lights = [
   { color: 0xfa957e, intensity: 1, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
   { color: 0x8e9afa, intensity: 1.2, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
@@ -70,7 +71,7 @@ export const bundle_data = [
     name: "dnd_bundle",
     clickable: false,
     inner_model: "tracker.glb",
-    description: null,
+    description: DnDDescription,
     additionalModelSetup: () => {},
     onClick: () => {},
   },
