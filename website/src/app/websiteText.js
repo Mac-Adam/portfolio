@@ -7,6 +7,21 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  fractal_description: {
+    pl: `Wybierz się w matematyczną podróż w głąb fraktali! 
+    Wykorzystane obliczenia o dowolnej precyzji na karcie graficznej pozwalają na płynne renderowanie głębokich zbliżeń.
+    Projekt stworzony w Unity, część po stronie procesora napisana w C#, po stronie karty graficznej w HLSL.
+    Jeden z moich większych projektów programistycznych. Więcej renderów, dokładniejszy opis oraz sama aplikację można znaleźć w repozytorium`,
+    en: `Embark on a mathematical journey into the depths of fractals.
+    The use of arbitrary-precision arithmetic on the gpu enables a smooth experience on deep zooms.
+    This project was made with Unity, cpu-side is codded in C# while the gpu-side shaders are coded in HLSL.
+    It is one of my biggest projects. If you are interested, check the repository for more high-resolution renders, and a way to download the app.
+    `,
+  },
+  fractal_title: {
+    pl: "Nieskończony Generator Fraktali",
+    en: "Infinite Fractal Renderer",
+  },
   dnd_tweet1: {
     pl: `Świetne urządzenie!!!
     Zanim dowiedziałem się o istnieniu tego monitora zasobów, non stop musiałem gumować i ponownie zapisywać wszystkie rzeczy.
@@ -221,6 +236,10 @@ const websiteText = {
   dnd_bundle: {
     pl: "Monitor zasobów D&D",
     en: "D&D Tracker",
+  },
+  fractal_bundle: {
+    pl: "Renderer Fraktalów",
+    en: "Fractal Renderer",
   },
 };
 export default websiteText;

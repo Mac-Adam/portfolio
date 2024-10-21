@@ -98,6 +98,14 @@ module.exports = {
   				to: {
   					backgroundPosition: 'var(--bg-size) 0'
   				}
+  			},
+  			'background-position-spin': {
+  				'0%': {
+  					backgroundPosition: 'top center'
+  				},
+  				'100%': {
+  					backgroundPosition: 'bottom center'
+  				}
   			}
   		},
   		animation: {
@@ -106,7 +114,8 @@ module.exports = {
   			rainbow: 'rainbow var(--speed, 2s) infinite linear',
   			ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite',
   			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
-  			gradient: 'gradient 8s linear infinite'
+  			gradient: 'gradient 8s linear infinite',
+  			'background-position-spin': 'background-position-spin 3000ms infinite alternate'
   		}
   	}
   },

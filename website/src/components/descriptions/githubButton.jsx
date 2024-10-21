@@ -10,7 +10,7 @@ const GithubButton = ({ languageProvider, url }) => {
       onClick={() => {
         window.open(url, "_blank");
       }}
-      className="cursor-pointer absolute inset-x-0 bottom-0 py-2 flex w-full items-center justify-center"
+      className="z-30 cursor-pointer absolute inset-x-0 bottom-0 py-2 flex w-full items-center justify-center"
     >
       <AnimatedGradientText>
         <GitHubLogoIcon />
