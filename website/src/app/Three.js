@@ -223,6 +223,14 @@ function MyThree() {
       fxaaPass.material.uniforms["resolution"].value.set(1 / (window.innerWidth * pixelRatio), 1 / (window.innerHeight * pixelRatio));
     };
 
+    // --- SkyBox ---
+    const loader = new THREE.CubeTextureLoader();
+    loader.setPath("skybox/");
+
+    const textureCube = loader.load(["right.png", "left.png", "front.png", "back.png", "top.png", "bottom.png"]);
+
+    scene.background = textureCube;
+
     // --- Lights ---
     lights.forEach((l) => {
       const light = new THREE.DirectionalLight(l.color, l.intensity);
