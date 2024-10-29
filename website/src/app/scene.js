@@ -4,6 +4,7 @@ import WindStationDescription from "../components/descriptions/windStationDescri
 import SuiloDescription from "../components/descriptions/suiloDescription";
 import DnDDescription from "../components/descriptions/dndDescription";
 import FractalDescription from "../components/descriptions/fractalDescription";
+import AboutMeDescription from "../components/descriptions/aboutMeDescription";
 export const lights = [
   { color: 0xfa957e, intensity: 1, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
   { color: 0x8e9afa, intensity: 1.2, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
@@ -12,7 +13,7 @@ export const lights = [
 export const bundle_data = [
   {
     size: 2.5,
-    position: new THREE.Vector3(2, 0, 0),
+    position: new THREE.Vector3(6, 0, 0),
     edge_color: 0x00ff00,
     name: "weather_bundle",
     inner_model: "wether_station.glb",
@@ -23,7 +24,7 @@ export const bundle_data = [
   },
   {
     size: 1,
-    position: new THREE.Vector3(-2, 0, 0),
+    position: new THREE.Vector3(-6, 0, 0),
     edge_color: 0xffff00,
     name: "lang_bundle",
     clickable: true,
@@ -85,6 +86,25 @@ export const bundle_data = [
     inner_model: "fractal.glb",
     description: FractalDescription,
     additionalModelSetup: () => {},
+    onClick: () => {},
+  },
+  {
+    size: 2,
+    position: new THREE.Vector3(0, 0, 0),
+    edge_color: 0x00ff00,
+    name: "about_me_bundle",
+    clickable: false,
+    inner_model: "astronaut.glb",
+    description: AboutMeDescription,
+    additionalModelSetup: function additionalModelSetup() {
+      this.inner_mesh.children.forEach((c) => {
+        if (c.material) {
+          c.material.side = THREE.DoubleSide;
+          c.material.depthWrite = true;
+          c.material.depthTest = true;
+        }
+      });
+    },
     onClick: () => {},
   },
 ];
