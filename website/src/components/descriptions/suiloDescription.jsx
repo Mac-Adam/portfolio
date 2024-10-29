@@ -85,7 +85,11 @@ const SuiloDescription = ({ languageProvider }) => {
 
   return (
     <div className="relative flex h-full w-full flex-col p-6 overflow-hidden rounded-lg border bg-background md:shadow-xl">
-      <SparklesText className="text-center p-6" text={languageProvider.getText("suilo_title")} />
+      <SparklesText
+        className="text-center p-6"
+        colors={{ first: "#7953db", second: "#ed641f" }}
+        text={languageProvider.getText("suilo_title")}
+      />
       <AnimatedList>
         {notifications.map((item, idx) => (
           <Notification {...item} key={idx} languageProvider={languageProvider} />

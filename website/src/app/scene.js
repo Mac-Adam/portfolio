@@ -89,7 +89,7 @@ export const bundle_data = [
     onClick: () => {},
   },
   {
-    size: 2,
+    size: 1.5,
     position: new THREE.Vector3(0, 0, 0),
     edge_color: 0x00ff00,
     name: "about_me_bundle",

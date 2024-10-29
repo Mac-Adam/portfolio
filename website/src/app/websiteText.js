@@ -7,6 +7,57 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  about_me_description: {
+    pl: `Cześć, jestem Adam.
+    Studiuję Automatykę i Robotykę na AGH w Krakowie, skończyłem 1LO w Gliwicach.
+    Od zawsze interesowałem się matematyką i fizyką, w liceum udało się zostać finalistą z olimpiad z tych przedmiotów.
+    Równie długo zajmuję się programowaniem, chodziłem na różne zajęcia/koła naukowe, jednak większość umiejętności nabyłem sam.
+    Od czystego programowania moje zainteresowania szybko przeszły na elektronikę, modelowanie oraz robotykę. 
+    Najciekawsze są dla mnie projekty łączące te dziedziny.
+    Podczas każdego z moich projektów starałem się wykorzystywać jak najwięcej nowych dla mnie technologii,
+    Przez to dość szybko znajduję się w nowym języku, programie, lub dziedzinie.
+    Przez lata udało mi się skończyć wiele projektów, stworzyłem tą stronę, aby zebrać ich opis w ciekawy sposób.
+    Zapraszam więc do eksploracji klikając na porozmieszczane dookoła obiekty. Aby wyjść z przybliżenia kliknij escape albo w pustkę. Kamerę możesz obrócić przeciągając myszką.
+
+    A tutaj kilka słów o mnie:
+    Kiedy nie zajmuję się studiami, działam w kole naukowym Integra lub pracuję nad którymś z moich hobbystycznych projektów.
+    Lubię się wspinać a czasem nawet pójdę biegać. W zimę jeżdżę na nartach.
+    Wieczorami chętnie gram ze znajomymi w różne gry komputerowe, a kiedy uda nam się znaleźć termin, spotykamy się aby pograć w D&D, papierową grę RPG.
+    Samotne wieczory często spędzam z dobrym (a przynajmniej taki jest zamysł) filmem, a w podróży pociągiem przyśpieszam upływ czasu audiobookiem.
+    Nadmiar wolnego czasu zużywam na składanie origami.
+
+    `,
+    en: `Hi, I'am Adam
+    I'am studying Automatic Control and Robotics at AGH UST Karcow, I've graduated from 1 LO in Gliwice.
+    I've always been interested in Maths and Physics, in high school I achieved a finalist title in olympiads from those subjects
+    Similarly, I've always been interested in programming, I've attended some science clubs, but I am mostly self-taught.
+    From programming, my interests broadened to electronics, 3d modeling and robotics.
+    I am most interested in projects connecting those fields.
+    For each new project I tried to use new technologies.
+    Because of that I quickly adapt to new programming languages and programs.
+    Over the years I've created many projects, this website was made to gather them in a fun way.
+    I encourage you to explore my space by clicking on the floating objects. You can exit the zoomed view by clicking on empty space or pressing escape. Move the camera by dragging mouse.
+    
+    A few words about me:
+    When I am not studying, I'am working in Integra science club or on some of my hobby projects.
+    I like to climb, sometimes I go running. In the winter I go skiing.
+    In the evenings I enjoy to play computer games with my friends, whenever we find a fitting date, we schedule a D&D game, a table top RPG.
+    I like to spend lonely evenings with a movie, to quicken the train rides I listen to audiobook.
+    Whatever free time I have left, I spend on folding origami.
+    `,
+  },
+  about_me_tech: {
+    pl: ["Fusion 360", "Unity", "React", "Next.js", "APIs", "Matlab"],
+    en: ["Fusion 360", "Unity", "React", "Next.js", "APIs", "Matlab"],
+  },
+  about_me_abilities: {
+    pl: ["Programowanie", "Projektowanie PCB", "Modelowanie", "Druk 3D", "Matematyka", "Fizyka", "Elektronika", "Robotyka"],
+    en: ["Programming", "PCB Design", "3D Modeling", "3D Printing", "Maths", "Physics", "Electronics", "Robotics"],
+  },
+  about_me_languages: {
+    pl: ["python", "Java Script", "Type Script", "C#", "C/C++"],
+    en: ["python", "Java Script", "Type Script", "C#", "C/C++"],
+  },
   fractal_description: {
     pl: `Wybierz się w matematyczną podróż w głąb fraktali! 
     Wykorzystane obliczenia o dowolnej precyzji na karcie graficznej pozwalają na płynne renderowanie głębokich zbliżeń.
@@ -236,6 +287,10 @@ const websiteText = {
   dnd_bundle: {
     pl: "Monitor zasobów D&D",
     en: "D&D Tracker",
+  },
+  about_me_bundle: {
+    pl: "O mnie",
+    en: "About Me",
   },
   fractal_bundle: {
     pl: "Renderer Fraktalów",
