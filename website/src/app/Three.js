@@ -28,6 +28,7 @@ function MyThree() {
   const refLanguageProvider = useRef(null);
   const [Description, setDescription] = useState(null);
   const [showGui, setShowGui] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     refLanguageProvider.current = new LanguageProvider("pl");
@@ -140,7 +141,14 @@ function MyThree() {
       }
     }
 
+    const loadingManager = new THREE.LoadingManager(() => {
+      setLoaded(true);
+      const loadingScreen = document.getElementById("loading-screen");
+      loadingScreen.classList.add("opacity-0");
+    });
+
     // --- Setup render ---
+
     bloomLayer.set(BLOOM_SCENE);
     refClock.current = new THREE.Clock();
 
@@ -152,7 +160,7 @@ function MyThree() {
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth),
-      0.3, // strength
+      0.4, // strength
       0.1, // radius
       0 // threshold
     );
@@ -191,7 +199,7 @@ function MyThree() {
 
     renderer.setSize(window.innerWidth);
     const controls = new OrbitControls(camera, renderer.domElement);
-    camera.position.z = 5;
+    camera.position.z = 10;
     controls.target.set(0, 0, 0);
     controls.update();
 
@@ -246,7 +254,7 @@ function MyThree() {
 
     // --- Bundles ---
     bundle_data.forEach((b) => {
-      refBundles.current.push(new Bundle(b, scene, refLanguageProvider.current));
+      refBundles.current.push(new Bundle(b, scene, refLanguageProvider.current, loadingManager));
     });
     window.onresize();
 
@@ -272,6 +280,7 @@ function MyThree() {
   return (
     <>
       <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
+        <div className="pointer-events-none absolute size-full bg-slate-700 transition-opacity" id="loading-screen"></div>
         <div
           ref={refRenderWindow}
           style={{

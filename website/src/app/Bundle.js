@@ -9,7 +9,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import typefaceData from "@compai/font-recursive/data/typefaces/normal-400.json";
 
 class Bundle {
-  constructor(bundle_data, scene, languageProvider) {
+  constructor(bundle_data, scene, languageProvider, loadingManager) {
     //This is not the optimal way to program it, but atm rewriting would take much more
     //time, some bundles should be just clicked (language) without focusing on it.
 
@@ -71,7 +71,7 @@ class Bundle {
 
     // --- Inner contents --- (placeholder for now)
     if (bundle_data.inner_model) {
-      const loader = new GLTFLoader();
+      const loader = new GLTFLoader(loadingManager);
       loader.load(
         // resource URL
         `models/${bundle_data.inner_model}`,

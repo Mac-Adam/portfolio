@@ -147,7 +147,7 @@ export function MyDock({ languageProvider }) {
                 onClick={() => {
                   navigator.clipboard.writeText("maciugaadam@gmail.com");
                 }}
-                href={"mailto:maciugaadam@gmail.com"}
+                href={"#" /*"mailto:maciugaadam@gmail.com"*/}
                 aria-label={"email"}
                 className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12 rounded-full")}
               >
