@@ -7,6 +7,10 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  email_copy: {
+    pl: "Kliknij by skopiować",
+    en: "Click to copy",
+  },
   about_me_description: {
     pl: `Cześć, jestem Adam.
     Studiuję Automatykę i Robotykę na AGH w Krakowie, skończyłem 1LO w Gliwicach.
