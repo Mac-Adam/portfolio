@@ -12,6 +12,7 @@ import { BLOOM_SCENE, vertexShader, fragmentShader } from "./Common";
 import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
+import LoadingScreen from "../components/loading_screen";
 
 const DRAWER_WIDTH = "45rem";
 const TRANSITION = "all 250ms ease-in-out";
@@ -143,8 +144,6 @@ function MyThree() {
 
     const loadingManager = new THREE.LoadingManager(() => {
       setLoaded(true);
-      const loadingScreen = document.getElementById("loading-screen");
-      loadingScreen.classList.add("opacity-0");
     });
 
     // --- Setup render ---
@@ -280,7 +279,8 @@ function MyThree() {
   return (
     <>
       <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
-        <div className="pointer-events-none absolute size-full bg-slate-700 transition-opacity" id="loading-screen"></div>
+        {loaded ? "" : <LoadingScreen />}
+
         <div
           ref={refRenderWindow}
           style={{

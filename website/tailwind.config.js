@@ -119,6 +119,14 @@ module.exports = {
   					transform: 'rotate(215deg) translateX(-500px)',
   					opacity: '0'
   				}
+  			},
+  			'shiny-text': {
+  				'0%, 90%, 100%': {
+  					'background-position': 'calc(-100% - var(--shiny-width)) 0'
+  				},
+  				'30%, 60%': {
+  					'background-position': 'calc(100% + var(--shiny-width)) 0'
+  				}
   			}
   		},
   		animation: {
@@ -129,7 +137,8 @@ module.exports = {
   			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
   			gradient: 'gradient 8s linear infinite',
   			'background-position-spin': 'background-position-spin 3000ms infinite alternate',
-  			meteor: 'meteor 5s linear infinite'
+  			meteor: 'meteor 5s linear infinite',
+  			'shiny-text': 'shiny-text 8s infinite'
   		}
   	}
   },
