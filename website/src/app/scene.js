@@ -5,6 +5,7 @@ import SuiloDescription from "../components/descriptions/suiloDescription";
 import DnDDescription from "../components/descriptions/dndDescription";
 import FractalDescription from "../components/descriptions/fractalDescription";
 import AboutMeDescription from "../components/descriptions/aboutMeDescription";
+import OrigamiDescription from "../components/descriptions/origamiDescription";
 export const lights = [
   { color: 0xfa957e, intensity: 2, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
   { color: 0x8e9afa, intensity: 2.4, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
@@ -96,6 +97,17 @@ export const bundle_data = [
     clickable: false,
     inner_model: "astronaut.glb",
     description: AboutMeDescription,
+    additionalModelSetup: () => {},
+    onClick: () => {},
+  },
+  {
+    size: 1.5,
+    position: new THREE.Vector3(-6, 0, 0),
+    edge_color: 0xe036c7,
+    name: "origami_bundle",
+    clickable: false,
+    inner_model: "origami_bird.glb",
+    description: OrigamiDescription,
     additionalModelSetup: function additionalModelSetup() {
       this.inner_mesh.children.forEach((c) => {
         if (c.material) {

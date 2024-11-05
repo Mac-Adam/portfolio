@@ -300,5 +300,9 @@ const websiteText = {
     pl: "Renderer Fraktalów",
     en: "Fractal Renderer",
   },
+  origami_bundle: {
+    pl: "Origami",
+    en: "Origami",
+  },
 };
 export default websiteText;
