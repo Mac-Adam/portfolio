@@ -7,6 +7,18 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  origami_title: {
+    pl: "Origami",
+    en: "Origami",
+  },
+  origami_description: {
+    pl: `Origami to japońska sztuka składania papieru bez cięcia i klejenia.
+    Przez kilka ostatnich lat złożyłem wiele modeli z jednej kwadratowej kartki papieru.
+    czasem sięgającej 100cm x 100cm. Oto kilka zdjęć papierowych, smoków, zwierząt, i nie tylko.`,
+    en: `Origami is a Japanese art of folding paper with no cuts and no glue.
+    During recent years I've folded many models from a single sheet of paper, sometimes as big as 100cm x 100cm.
+    Heres some photos of paper dragons, animals, and other creatures`,
+  },
   email_copy: {
     pl: "Kliknij by skopiować",
     en: "Click to copy",
@@ -176,6 +188,10 @@ const websiteText = {
   github: {
     pl: "Zobacz na GitHub'ie",
     en: "View it on GitHub",
+  },
+  instagram: {
+    pl: "Zobacz na Instagram'ie",
+    en: "View it on Instagram",
   },
   ws_esp_description: {
     pl: `Stacją kontroluje mikrokontroler ESP32, jest osadzony na zaprojektowanej i wykonanej przeze mnie 2 warstwowej płytce PBC.
