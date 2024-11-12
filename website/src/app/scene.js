@@ -119,4 +119,15 @@ export const bundle_data = [
     },
     onClick: () => {},
   },
+  {
+    size: 1.5,
+    position: new THREE.Vector3(-4, 4, 0),
+    edge_color: 0x75000e,
+    name: "smashbot_bundle",
+    clickable: false,
+    inner_model: "smashbot.glb",
+    description: OrigamiDescription,
+    additionalModelSetup: () => {},
+    onClick: () => {},
+  },
 ];

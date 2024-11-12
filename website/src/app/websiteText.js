@@ -320,5 +320,9 @@ const websiteText = {
     pl: "Origami",
     en: "Origami",
   },
+  smashbot_bundle: {
+    pl: "Smashbot",
+    en: "Smashbot",
+  },
 };
 export default websiteText;
