@@ -6,6 +6,7 @@ import DnDDescription from "../components/descriptions/dndDescription";
 import FractalDescription from "../components/descriptions/fractalDescription";
 import AboutMeDescription from "../components/descriptions/aboutMeDescription";
 import OrigamiDescription from "../components/descriptions/origamiDescription";
+import SmashbotDescription from "../components/descriptions/smashbotDescription";
 export const lights = [
   { color: 0xfa957e, intensity: 2, position: new THREE.Vector3(0, 10, 0), target: new THREE.Vector3(-5, 0, 0) },
   { color: 0x8e9afa, intensity: 2.4, position: new THREE.Vector3(3, -10, 30), target: new THREE.Vector3(0, 10, -5) },
@@ -126,7 +127,7 @@ export const bundle_data = [
     name: "smashbot_bundle",
     clickable: false,
     inner_model: "smashbot.glb",
-    description: OrigamiDescription,
+    description: SmashbotDescription,
     additionalModelSetup: () => {},
     onClick: () => {},
   },

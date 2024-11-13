@@ -7,6 +7,30 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  sb_what_is_it_bn: {
+    pl: "Co to smashbot?",
+    en: "What is smashbot?",
+  },
+  sb_my_role_bn: {
+    pl: "Moja rola",
+    en: "My role",
+  },
+  sb_about_project_bn: {
+    pl: "O projekcie",
+    en: "About the project",
+  },
+  sb_robocomp2024_bn: {
+    pl: "Robocomp 2024",
+    en: "Robocomp 2024",
+  },
+  sb_xChalange2024_bn: {
+    pl: "XChallange 2024",
+    en: "XChallange 2024",
+  },
+  smashbot_title: {
+    pl: "Smashbot mini",
+    en: "Smashbot mini",
+  },
   origami_title: {
     pl: "Origami",
     en: "Origami",
