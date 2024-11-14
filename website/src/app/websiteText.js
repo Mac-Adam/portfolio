@@ -7,6 +7,26 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  sb_what_is_it_des: {
+    pl: "Co to smashbot?",
+    en: "What is smashbot?",
+  },
+  sb_my_role_des: {
+    pl: "Moja rola",
+    en: "My role",
+  },
+  sb_about_project_des: {
+    pl: "O projekcie",
+    en: "About the project",
+  },
+  sb_robocomp2024_des: {
+    pl: "Robocomp 2024",
+    en: "Robocomp 2024",
+  },
+  sb_xChalange2024_des: {
+    pl: "XChallange 2024",
+    en: "XChallange 2024",
+  },
   sb_what_is_it_bn: {
     pl: "Co to smashbot?",
     en: "What is smashbot?",

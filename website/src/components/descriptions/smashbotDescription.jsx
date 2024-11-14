@@ -1,13 +1,47 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { cn } from "./../../lib/utils";
 import { FadeText } from "../ui/fade-text";
 import ShinyButton from "../ui/shiny-button";
+import Confetti from "../ui/confetti";
+import confetti from "canvas-confetti";
 
 const SmashbotDescription = ({ languageProvider }) => {
   const [language, setLanguage] = useState(languageProvider.language);
   languageProvider.addCallback(setLanguage);
+  const confettiRef = useRef(null);
+
+  const [currDescription, setCurrDescription] = useState("sb_what_is_it_des");
+
+  const handleClick = () => {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
+  };
+
   return (
     <div className="space-y-6 bg-background p-6 h-full flex flex-col items-center">
       <FadeText
@@ -19,12 +53,44 @@ const SmashbotDescription = ({ languageProvider }) => {
         text={languageProvider.getText("smashbot_title")}
       />
       <div className="my-12 flex flex-wrap justify-center gap-4 w-3/4">
-        <ShinyButton>{languageProvider.getText("sb_what_is_it_bn")}</ShinyButton>
-        <ShinyButton>{languageProvider.getText("sb_my_role_bn")}</ShinyButton>
-        <ShinyButton>{languageProvider.getText("sb_about_project_bn")}</ShinyButton>
-        <ShinyButton>{languageProvider.getText("sb_robocomp2024_bn")}</ShinyButton>
-        <ShinyButton>{languageProvider.getText("sb_xChalange2024_bn")}</ShinyButton>
+        <ShinyButton
+          onClick={() => {
+            setCurrDescription("sb_what_is_it_des");
+          }}
+        >
+          {languageProvider.getText("sb_what_is_it_bn")}
+        </ShinyButton>
+        <ShinyButton
+          onClick={() => {
+            setCurrDescription("sb_my_role_des");
+          }}
+        >
+          {languageProvider.getText("sb_my_role_bn")}
+        </ShinyButton>
+        <ShinyButton
+          onClick={() => {
+            setCurrDescription("sb_about_project_des");
+          }}
+        >
+          {languageProvider.getText("sb_about_project_bn")}
+        </ShinyButton>
+        <ShinyButton
+          onClick={() => {
+            setCurrDescription("sb_robocomp2024_des");
+            handleClick();
+          }}
+        >
+          {languageProvider.getText("sb_robocomp2024_bn")}
+        </ShinyButton>
+        <ShinyButton
+          onClick={() => {
+            setCurrDescription("sb_xChalange2024_des");
+          }}
+        >
+          {languageProvider.getText("sb_xChalange2024_bn")}
+        </ShinyButton>
       </div>
+      <div className="shadow-2xl size-full border p-4">{languageProvider.getText(currDescription)}</div>
     </div>
   );
 };
