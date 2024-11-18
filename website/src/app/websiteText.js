@@ -8,24 +8,51 @@ const websiteText = {
     en: "Learn more",
   },
   sb_what_is_it_des: {
-    pl: "Co to smashbot?",
-    en: "What is smashbot?",
+    pl: `Smashboty to roboty, zaprojektowane do walki, konkurencja polega na stworzeniu robota, którym będzie się sterowało na arenie podczas zawodów.
+    Arena jest rozmiarów 2x2 m, walka trwa do 3 minut lub do nokautu przeciwnika. 
+    Na arenie moga znajdować się różnego rodzaju młoty, piły zapadnie kolce, które pomagają w zniszczeniu robota.
+    Kategoria smashbot mini charakteryzuje się ograniczeniem wagowym do 454 g.`,
+    en: `Smashbots are robots created to fight. In order to participate in the competition, you have to create a robot that will fight to it's death in the arena. 
+    The arena is 2 by 2 meters in size. In order to win, you have to control your robot to destroy the other, or survive for 3 minutes.
+    On the arena there might me various traps, such as hammers, spikes or pits.
+    Category smashbot mini has a weight limit of 454 g`,
   },
   sb_my_role_des: {
-    pl: "Moja rola",
-    en: "My role",
+    pl: `Jako koordynator projektu, zajmowałem się ustalaniem terminów spotkań, podziałem obowiązków oraz zamawianiem potrzebnych komponentów.
+    Oprócz tego tworzyłem projekt robota, płytki PCB oraz pisałem kod znajdujący się na mikrokontrolerze.`,
+    en: `As a project coordinator I've scheduled meetings, distributed tasks and  ordered components.
+    Besides that, I was modeling the robot, designing the PCB and writing the C program for the mikrokontroler`,
   },
   sb_about_project_des: {
-    pl: "O projekcie",
-    en: "About the project",
+    pl: `Nasz robot, tak naprawdę składał sie z dwóch robotów. Zasady pozwalają na wystawienie do jednej walki większej ilości robotów, pod warunkiem że łącznie mieszczą się w masie.
+    Pozwoliło nam to, na atakowanie przeciwnika z dwóch stron, przez co trudniej było mu sie obronić.
+    Naszą taktyką było podjechanie pod przeciwnika, i przewrócenie go z wykorzystaniem znajdujących się z przodu wideł.
+    Największym minusem naszego robota było to, że przez oszczędność na masie wykorzystaliśmy plastik jako obudowe, który jest znacznie słabszy od metalowych pancerzy użytych przez przeciwników.
+    Dwa silniki DC i serwomechanizm był kontrolowany przez mikrokontorler Nordic Dongle, łączność z robotem zrealizowaliśmy przez protokół bluetooth`,
+    en: `Out robot, consisted of two robots, as long as those weigh less than 454g it is within the rules to fight with multiple robots.
+    This allowed us to attack from two opposite sides, it is difficult to defend from such an attack.
+    Our tactic was simple, flip the enemy over, throw it out of the arena, or use the traps deployed by event organizers.
+    Biggest drawback of our robot was it's armor, in order to fit two robots within the weight limit, we used plastic, which was much weaker than metal armor used by most of the enemies.
+    Two DC motors and a servomechanism was controlled  by Nordic Dongle microcontroler. We communicated with the robot via bluetooth.`,
   },
   sb_robocomp2024_des: {
-    pl: "Robocomp 2024",
-    en: "Robocomp 2024",
+    pl: `Robocomp 2024 to wydarzenie zorganizowane przez koło naukowe Integra, odbyło sie w hali sportowej AGH.
+    Były to nasze pierwsze zawody w tej kategorii. Pierwszą walke stoczyliśmy z robotem Murex, był to robot podobny do robota HUGE.
+    Walkę udało nam się wygrać dzięki temu, że słaba konstrukcja przeciwnika, sprawiła że zniszczył się on przy swoim ataku pozostawiając naszego drugiego robota bez szwanku.
+    Kolejną walke graliśmy na robota Szerszeń, walkę tą przegraliśmy. 
+    Walke o 3 miejsce stoczyliśmy z robotem Wariat, który posiadał kręcące się ostrze z przodu. Nie miał on jednak możliwości jazdy do góry nogami, wykorzystaliśmy tą słabość wywracając przeciwnika.`,
+    en: `Robocomp 2024 was an event organized by Integra science club. It took place in AGH sports hall.
+    It was the first robotic event we took part in. Our first fight was against robot Murex, it was a robot similar to the robot HUGE.
+    We managed to win this fight because the week construction of the enemy, made him decimate himself while destroying one of our robot.
+    Second fight was against Szerszeń, we lost it.
+    The 3rd place match was against a horizontal spinner called Wariat. It's weakness was, that the robot had no way of moving while on its back.
+    We exploited that weakness to ground it.`,
   },
   sb_xChalange2024_des: {
-    pl: "XChallange 2024",
-    en: "XChallange 2024",
+    pl: `XChallange 2024 to największe tego typu wydarzenie w Polsce, odbyło sie ono w Rzeszowie. 
+    Stoczyliśmy tu tylko jedna walkę, zostaliśmy pokonani przez spinnera Funciak z Serem. Szybkość i zwinność robota nie wiele pomaga, kiedy wjeżdża się w broń przeciwnika.`,
+    en: `XChallange 2024 is the biggest event of this kind in Poland. It took place in Rzeszów.
+    We lost our first fight against a spinner called Funciak z Serem, It turns out speed and agility are of no use, you rush into the blade of the enemy.`,
   },
   sb_what_is_it_bn: {
     pl: "Co to smashbot?",

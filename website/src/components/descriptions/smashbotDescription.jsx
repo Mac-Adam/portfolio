@@ -52,7 +52,7 @@ const SmashbotDescription = ({ languageProvider }) => {
         }}
         text={languageProvider.getText("smashbot_title")}
       />
-      <div className="my-12 flex flex-wrap justify-center gap-4 w-3/4">
+      <div className="my-12 flex flex-wrap justify-center gap-4 w-4/5">
         <ShinyButton
           onClick={() => {
             setCurrDescription("sb_what_is_it_des");
@@ -90,7 +90,14 @@ const SmashbotDescription = ({ languageProvider }) => {
           {languageProvider.getText("sb_xChalange2024_bn")}
         </ShinyButton>
       </div>
-      <div className="shadow-2xl size-full border p-4">{languageProvider.getText(currDescription)}</div>
+      <div className="shadow-2xl h-1/2 border p-4">{languageProvider.getText(currDescription)}</div>
+      <div className="shadow-2xl flex h-[35%]">
+        <div className="absolute left-0 pointer-events-none h-full w-1/4 bg-gradient-to-r from-white "></div>
+        <div className="absolute right-0 pointer-events-none h-full w-1/4 bg-gradient-to-l from-white "></div>
+        <figure className="flex overflow-x-hidden items-center">
+          <img className="h-full w-auto object-cover" src="laweciarze.jpg"></img>
+        </figure>
+      </div>
     </div>
   );
 };
