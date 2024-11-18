@@ -23,7 +23,7 @@ const Circle = forwardRef(({ className, children }, ref) => {
 
 Circle.displayName = "Circle";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ languageProvider, landscape }) => {
   const containerRef = useRef(null);
   const div1Ref = useRef(null);
   const div2Ref = useRef(null);
@@ -31,7 +31,7 @@ const LoadingScreen = () => {
   return (
     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center bg-black" ref={containerRef}>
       <AnimatedShinyText className="p-6 text-6xl inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-        <span>Loading ...</span>
+        <span>{languageProvider?.getText("loading")}</span>
       </AnimatedShinyText>
 
       <div className="w-5/6 flex flex-col items-stretch justify-between gap-10">
@@ -41,6 +41,13 @@ const LoadingScreen = () => {
         </div>
       </div>
       <AnimatedBeam duration={3} containerRef={containerRef} fromRef={div1Ref} toRef={div2Ref} />
+      {landscape ? (
+        ""
+      ) : (
+        <AnimatedShinyText className="w-5/6 p-6 text-4xl inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
+          <span>{languageProvider?.getText("flip_phone")}</span>
+        </AnimatedShinyText>
+      )}
     </div>
   );
 };

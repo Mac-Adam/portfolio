@@ -13,6 +13,7 @@ import { lights, bundle_data } from "./scene.js";
 import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
 import LoadingScreen from "../components/loading_screen";
+import { useSearchParams } from "react-router-dom";
 
 const DRAWER_WIDTH = "50vw";
 const TRANSITION = "all 250ms ease-in-out";
@@ -27,12 +28,17 @@ function MyThree() {
   const refPickHelper = useRef(new PickHelper());
   const refPosStartedClick = useRef({ x: 0, y: 0 });
   const refLanguageProvider = useRef(null);
+  const [searchParams] = useSearchParams();
   const [Description, setDescription] = useState(null);
   const [showGui, setShowGui] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [landscape, setLandscape] = useState(true);
+  const [langLoaded, setLangLoaded] = useState(false);
 
   useEffect(() => {
-    refLanguageProvider.current = new LanguageProvider("pl");
+    const lang = searchParams.get("lang");
+    refLanguageProvider.current = new LanguageProvider(lang ?? "pl");
+    setLangLoaded(true);
     clearPickPosition();
 
     function mouseOnRenderWindow(event) {
@@ -108,8 +114,9 @@ function MyThree() {
     window.addEventListener(
       "touchstart",
       (event) => {
-        // prevent the window from scrolling
-        event.preventDefault();
+        if (mouseOnRenderWindow(event.touches[0])) {
+          event.preventDefault();
+        }
         recordMouseDown(event.touches[0]);
         setPickPosition(event.touches[0]);
       },
@@ -223,6 +230,7 @@ function MyThree() {
     };
 
     window.onresize = () => {
+      setLandscape(window.matchMedia("(orientation: landscape)").matches);
       const height = window.innerHeight;
       const width = window.innerWidth;
 
@@ -287,7 +295,15 @@ function MyThree() {
   return (
     <>
       <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
-        {loaded ? "" : <LoadingScreen />}
+        {loaded & landscape ? (
+          ""
+        ) : (
+          <LoadingScreen
+            key={langLoaded ? "loadedLang" : "notLoadedLang"}
+            languageProvider={refLanguageProvider.current}
+            landscape={landscape}
+          />
+        )}
 
         <div
           ref={refRenderWindow}

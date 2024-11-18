@@ -17,7 +17,7 @@ const features = [
     fullDes: "ws_rm_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:row-start-4 lg:row-end-7 lg:col-start-2 lg:col-end-3",
+    className: "row-start-4 row-end-7 col-start-2 col-end-3",
   },
   {
     Icon: BarChartIcon,
@@ -26,7 +26,7 @@ const features = [
     fullDes: "ws_web_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
+    className: "row-start-1 row-end-4 col-start-2 col-end-3",
   },
   {
     Icon: LightningBoltIcon,
@@ -35,7 +35,7 @@ const features = [
     fullDes: "ws_esp_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-5 lg:row-end-7",
+    className: "col-start-1 col-end-2 row-start-5 row-end-7",
   },
   {
     Icon: PaperPlaneIcon,
@@ -44,7 +44,7 @@ const features = [
     fullDes: "ws_wm_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-5",
+    className: "col-start-1 col-end-2 row-start-1 row-end-5",
   },
   {
     Icon: CubeIcon,
@@ -53,7 +53,7 @@ const features = [
     fullDes: "ws_3dp_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-3",
+    className: "col-start-3 col-end-3 row-start-1 row-end-3",
   },
   {
     Icon: EyeOpenIcon,
@@ -62,7 +62,7 @@ const features = [
     fullDes: "ws_other_description",
     cta: "learn_more",
     background: <img className="absolute -right-20 -top-20 opacity-60" alt="" />,
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-3 lg:row-end-7",
+    className: "col-start-3 col-end-3 row-start-3 row-end-7",
   },
 ];
 
@@ -72,12 +72,12 @@ const WindStationDescription = ({ languageProvider }) => {
   const [current, setCurrent] = useState("ws_esp_description");
   return (
     <div className="h-full flex flex-col p-4">
-      <BentoGrid className="lg:grid-rows-6 pb-4">
+      <BentoGrid className="grid-rows-6 pb-4">
         {features.map((feature) => (
           <BentoCard onClick={setCurrent} key={feature.name} languageProvider={languageProvider} {...feature} />
         ))}
       </BentoGrid>
-      <div className="p-3 relative flex flex-col flex-1 w-full overflow-hidden rounded-xl border bg-background md:shadow-xl">
+      <div className="p-4 relative flex flex-col flex-1 w-full overflow-hidden rounded-xl border bg-background md:shadow-xl">
         <BlurFade key={current} inView>
           <span className="flex-1 flex-col whitespace-pre-line pointer-events-none bg-gradient-to-b from-black to-slate-800 bg-clip-text text-left text-lg font-semibold leading-none text-transparent dark:from-slate-900 dark:to-slate-900/10">
             {languageProvider.getText(current)}

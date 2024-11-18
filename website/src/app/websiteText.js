@@ -7,6 +7,14 @@ const websiteText = {
     pl: "Dowiedz się więcej",
     en: "Learn more",
   },
+  loading: {
+    pl: "Ładowanie...",
+    en: "Loading...",
+  },
+  flip_phone: {
+    pl: "Trzymaj telefon poziomo",
+    en: "Hold your phone horizontally",
+  },
   sb_what_is_it_des: {
     pl: `Smashboty to roboty, zaprojektowane do walki, konkurencja polega na stworzeniu robota, którym będzie się sterowało na arenie podczas zawodów.
     Arena jest rozmiarów 2x2 m, walka trwa do 3 minut lub do nokautu przeciwnika. 
