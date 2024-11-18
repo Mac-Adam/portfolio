@@ -50,12 +50,14 @@ function MyThree() {
     function setPickPosition(event) {
       if (mouseOnRenderWindow(event)) {
         const pos = getCanvasRelativePosition(event);
+
         refPickPositiom.current.x = (pos.x / window.innerWidth) * 2 - 1;
         refPickPositiom.current.y = (pos.y / window.innerHeight) * -2 + 1; // note we flip Y
       } else {
         clearPickPosition();
       }
     }
+
     // The touch screen functionality was not yet tested and it most likely needs some changes.
     function clearPickPosition() {
       // unlike the mouse which always has a position
@@ -68,6 +70,7 @@ function MyThree() {
 
     function getActiveBundle(event) {
       const dist = Math.abs(event.clientX - refPosStartedClick.current.x) + Math.abs(event.clientY - refPosStartedClick.current.y);
+      console.log({ cl: event.clientX, ref: refPosStartedClick.current.x });
       if (mouseOnRenderWindow(event) && dist < 10) {
         if (!refPickHelper.current.pickedObject) {
           refPickHelper.current.activeBundle = null;
@@ -78,6 +81,12 @@ function MyThree() {
           refPickHelper.current.pickedObject.handleClick();
         }
       }
+      console.log({ mor: mouseOnRenderWindow(event), d: dist < 10 });
+    }
+
+    function touchEndHandle(event) {
+      getActiveBundle(event.changedTouches[0]);
+      clearPickPosition();
     }
 
     function keyPress(e) {
@@ -103,6 +112,7 @@ function MyThree() {
       (event) => {
         // prevent the window from scrolling
         event.preventDefault();
+        recordMouseDown(event.touches[0]);
         setPickPosition(event.touches[0]);
       },
       { passive: false }
@@ -112,7 +122,7 @@ function MyThree() {
       setPickPosition(event.touches[0]);
     });
 
-    window.addEventListener("touchend", clearPickPosition);
+    window.addEventListener("touchend", touchEndHandle);
 
     // --- Render with selective bloom ---
     //I am not 100% how it works, But i think It swaps the material for not bloomed objects for a pure black, which makes them invisible
