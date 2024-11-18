@@ -14,7 +14,7 @@ import PickHelper from "./pickHelper.js";
 import LanguageProvider from "./language.js";
 import LoadingScreen from "../components/loading_screen";
 
-const DRAWER_WIDTH = "45rem";
+const DRAWER_WIDTH = "50vw";
 const TRANSITION = "all 250ms ease-in-out";
 
 function MyThree() {
@@ -70,7 +70,6 @@ function MyThree() {
 
     function getActiveBundle(event) {
       const dist = Math.abs(event.clientX - refPosStartedClick.current.x) + Math.abs(event.clientY - refPosStartedClick.current.y);
-      console.log({ cl: event.clientX, ref: refPosStartedClick.current.x });
       if (mouseOnRenderWindow(event) && dist < 10) {
         if (!refPickHelper.current.pickedObject) {
           refPickHelper.current.activeBundle = null;
@@ -81,7 +80,6 @@ function MyThree() {
           refPickHelper.current.pickedObject.handleClick();
         }
       }
-      console.log({ mor: mouseOnRenderWindow(event), d: dist < 10 });
     }
 
     function touchEndHandle(event) {

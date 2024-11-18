@@ -52,7 +52,7 @@ const SmashbotDescription = ({ languageProvider }) => {
         }}
         text={languageProvider.getText("smashbot_title")}
       />
-      <div className="my-12 flex flex-wrap justify-center gap-4 w-4/5">
+      <div className="my-12 flex flex-wrap justify-center gap-4 w-3/4">
         <ShinyButton
           onClick={() => {
             setCurrDescription("sb_what_is_it_des");

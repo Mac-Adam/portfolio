@@ -39,10 +39,8 @@ export const TweetHeader = ({ tweet }) => (
         <img
           title={`Profile picture of ${tweet.user.name}`}
           alt={tweet.user.screen_name}
-          height={48}
-          width={48}
           src={tweet.user.profile_image_url_https}
-          className="overflow-hidden rounded-full border border-transparent"
+          className="overflow-hidden rounded-full border border-transparent w-12 h-12"
         />
       </a>
 

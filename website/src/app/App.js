@@ -4,6 +4,7 @@ import { useEffect } from "react";
 function App() {
   useEffect(() => {
     document.title = "Portfolio";
+    document.documentElement.style.fontSize = "2vh"; // Example
   }, []);
   return (
     <div>
