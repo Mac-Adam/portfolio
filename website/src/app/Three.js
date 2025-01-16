@@ -295,16 +295,13 @@ function MyThree() {
   return (
     <>
       <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
-        {loaded & landscape ? (
-          ""
-        ) : (
+        {(!loaded || !landscape) && (
           <LoadingScreen
             key={langLoaded ? "loadedLang" : "notLoadedLang"}
             languageProvider={refLanguageProvider.current}
             landscape={landscape}
           />
         )}
-
         <div
           ref={refRenderWindow}
           style={{
@@ -315,9 +312,21 @@ function MyThree() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            height: "100dvh",
           }}
         >
-          <div ref={refContainer} />
+          <div
+            ref={refContainer}
+            style={
+              loaded && landscape
+                ? {
+                    height: "100dvh",
+                    position: "fixed",
+                    bottom: 0,
+                  }
+                : {}
+            }
+          />
         </div>
         <div
           style={{

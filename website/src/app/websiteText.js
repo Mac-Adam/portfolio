@@ -157,7 +157,7 @@ const websiteText = {
     pl: `Wybierz się w matematyczną podróż w głąb fraktali! 
     Wykorzystane obliczenia o dowolnej precyzji na karcie graficznej pozwalają na płynne renderowanie głębokich zbliżeń.
     Projekt stworzony w Unity, część po stronie procesora napisana w C#, po stronie karty graficznej w HLSL.
-    Jeden z moich większych projektów programistycznych. Więcej renderów, dokładniejszy opis oraz sama aplikację można znaleźć w repozytorium`,
+    Jeden z moich większych projektów programistycznych. Więcej renderów, dokładniejszy opis oraz samą aplikację można znaleźć w repozytorium`,
     en: `Embark on a mathematical journey into the depths of fractals.
     The use of arbitrary-precision arithmetic on the gpu enables a smooth experience on deep zooms.
     This project was made with Unity, cpu-side is codded in C# while the gpu-side shaders are coded in HLSL.
