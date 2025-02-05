@@ -83,7 +83,7 @@ const WindStationDescription = ({ languageProvider }) => {
             {languageProvider.getText(current)}
           </span>
         </BlurFade>
-        <GithubButton languageProvider={languageProvider} url="https://github.com/Mac-Adam/weather_station" />
+        <GithubButton languageProvider={languageProvider} url="https://github.com/Mac-Adam/weather_station_2" />
         <BorderBeam size={250} duration={15} delay={9} borderWidth={2} />
         <AnimatedGridPattern
           numSquares={30}

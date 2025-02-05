@@ -41,7 +41,7 @@ const OrigamiDescription = ({ languageProvider }) => {
           {languageProvider.getText("origami_description")}
         </BoxReveal>
       </div>
-      <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+      <div className="relative flex h-3/5 w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
         <Marquee pauseOnHover className="[--duration:60s]">
           {row1.map((idx) => (
             <OrigamiImage key={idx} idx={idx} />
